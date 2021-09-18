@@ -1,0 +1,2 @@
+rootProject.name = "PWS Monitoring"
+include ':app'
