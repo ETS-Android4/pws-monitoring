@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "pws.monitoring.feri"
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
