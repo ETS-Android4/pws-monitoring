@@ -11,9 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PWSMonitoring">
         <activity
-            android:name=".RegisterActivity"
+            android:name=".activities.RegisterActivity"
             android:exported="true" />
-        <activity android:name=".LogInActivity">
+        <activity android:name=".activities.LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
