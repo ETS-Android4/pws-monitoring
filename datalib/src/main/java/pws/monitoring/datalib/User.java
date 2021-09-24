@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class User {
     String email;
     String password;
+    String ip;
     ArrayList<ActivityLog> logger;
     ArrayList<Notification> notifications;
 
@@ -13,16 +14,18 @@ public class User {
         notifications = new ArrayList<>();
     }
 
-    public User(String email, String password) {
+    public User(String email, String password, String ip) {
         this.email = email;
         this.password = password;
+        this.ip = ip;
         logger = new ArrayList<>();
         notifications = new ArrayList<>();
     }
 
-    public User(String email, String password, ArrayList<ActivityLog> logger, ArrayList<Notification> notifications) {
+    public User(String email, String password, String ip,  ArrayList<ActivityLog> logger, ArrayList<Notification> notifications) {
         this.email = email;
         this.password = password;
+        this.ip = ip;
         this.logger = logger;
         this.notifications = notifications;
     }
@@ -41,6 +44,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public ArrayList<ActivityLog> getLogger() {
@@ -64,6 +75,7 @@ public class User {
         return "User{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", ip='" + ip + '\'' +
                 ", logger=" + logger +
                 ", notifications=" + notifications +
                 '}';

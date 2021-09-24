@@ -3,7 +3,6 @@ package pws.monitoring.datalib;
 public class Plant {
     String commonName;
     String latinName;
-    boolean seasonal;
     int light;
     int humidity;
     int temperature;
@@ -14,10 +13,9 @@ public class Plant {
     public Plant() {
     }
 
-    public Plant(String commonName, String latinName, boolean seasonal, int light, int humidity, int temperature, int moisture, int frequency, int modifier) {
+    public Plant(String commonName, String latinName, int light, int humidity, int temperature, int moisture, int frequency, int modifier) {
         this.commonName = commonName;
         this.latinName = latinName;
-        this.seasonal = seasonal;
         this.light = light;
         this.humidity = humidity;
         this.temperature = temperature;
@@ -40,14 +38,6 @@ public class Plant {
 
     public void setLatinName(String latinName) {
         this.latinName = latinName;
-    }
-
-    public boolean isSeasonal() {
-        return seasonal;
-    }
-
-    public void setSeasonal(boolean seasonal) {
-        this.seasonal = seasonal;
     }
 
     public int getLight() {
@@ -103,7 +93,6 @@ public class Plant {
         return "Plant{" +
                 "commonName='" + commonName + '\'' +
                 ", latinName='" + latinName + '\'' +
-                ", seasonal=" + seasonal +
                 ", light=" + light +
                 ", humidity=" + humidity +
                 ", temperature=" + temperature +

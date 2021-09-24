@@ -26,13 +26,12 @@ import rx.subscriptions.CompositeSubscription;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    ApplicationState applicationState;
-
     private Button buttonCancel;
     private Button buttonRegister;
     private EditText edtEmail;
     private EditText edtPasswd;
     private EditText edtReTypePasswd;
+    private EditText edtIp;
 
     private CompositeSubscription subscription;
 
@@ -44,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         subscription = new CompositeSubscription();
+        user = new User();
 
         bindGUI();
 
@@ -68,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         edtEmail = (EditText) findViewById(R.id.edtEmailRegister);
         edtPasswd = (EditText) findViewById(R.id.edtPasswdRegister);
         edtReTypePasswd = (EditText) findViewById(R.id.edtRePasswdRegister);
+        edtIp = (EditText) findViewById(R.id.edtIp);
     }
 
     public void onButtonCloseClick() {
@@ -78,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void onButtonRegisterClick() {
         if(!edtEmail.getText().toString().equals("") && !edtPasswd.getText().toString().equals("") &&
-                !edtReTypePasswd.getText().toString().equals("")) {
+                !edtReTypePasswd.getText().toString().equals("") &&  !edtIp.getText().toString().equals("")) {
             if (edtPasswd.getText().toString().length() < 8) {
                 Toast.makeText(getBaseContext(), "Password is too short", Toast.LENGTH_LONG).show();
             } else {
@@ -87,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                 user.setEmail(edtEmail.getText().toString());
                 user.setPassword(edtReTypePasswd.getText().toString());
+                user.setIp(edtIp.getText().toString());
 
                 //API REQUEST
                 registerProcess();

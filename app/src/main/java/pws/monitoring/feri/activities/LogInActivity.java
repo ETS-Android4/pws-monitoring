@@ -85,7 +85,7 @@ public class LogInActivity extends AppCompatActivity {
     private void onClickLogin() {
         if(!edtEmail.getText().toString().equals("")
                 && !edtPassword.getText().toString().equals("")) {
-            this.user = new User();
+            user = new User();
             user.setEmail(edtEmail.getText().toString());
             user.setPassword(edtPassword.getText().toString());
             //API REQUEST

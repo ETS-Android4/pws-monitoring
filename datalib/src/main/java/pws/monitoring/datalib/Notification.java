@@ -5,15 +5,17 @@ public class Notification {
     String type;
     String note;
     String dateTime;
+    boolean read;
 
     public Notification() {
     }
 
-    public Notification(String title, String type, String note, String dateTime) {
+    public Notification(String title, String type, String note, String dateTime, boolean read) {
         this.title = title;
         this.type = type;
         this.note = note;
         this.dateTime = dateTime;
+        this.read = read;
     }
 
     public String getTitle() {
@@ -48,6 +50,14 @@ public class Notification {
         this.dateTime = dateTime;
     }
 
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
     @Override
     public String toString() {
         return "Notification{" +
@@ -55,6 +65,7 @@ public class Notification {
                 ", type='" + type + '\'' +
                 ", note='" + note + '\'' +
                 ", dateTime='" + dateTime + '\'' +
+                ", read=" + read +
                 '}';
     }
 

@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class ActivityLog {
     Plant plant;
     ArrayList<String> history;
+    int pin;
 
-    public ActivityLog(Plant plant, ArrayList<String> history) {
+    public ActivityLog(Plant plant, ArrayList<String> history, int pin) {
         this.plant = plant;
         this.history = new ArrayList<>();
+        this.pin = pin;
     }
 
     public Plant getPlant() {
@@ -27,11 +29,20 @@ public class ActivityLog {
         this.history = history;
     }
 
+    public int getPin() {
+        return pin;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
+    }
+
     @Override
     public String toString() {
         return "ActivityLog{" +
                 "plant=" + plant +
                 ", history=" + history +
+                ", pin=" + pin +
                 '}';
     }
 
