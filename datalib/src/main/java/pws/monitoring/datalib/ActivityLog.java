@@ -6,11 +6,16 @@ public class ActivityLog {
     Plant plant;
     ArrayList<String> history;
     int pin;
+    String macAddress;
 
-    public ActivityLog(Plant plant, ArrayList<String> history, int pin) {
+    public ActivityLog() {
+    }
+
+    public ActivityLog(Plant plant, ArrayList<String> history, int pin, String macAddress) {
         this.plant = plant;
-        this.history = new ArrayList<>();
+        this.history = history;
         this.pin = pin;
+        this.macAddress = macAddress;
     }
 
     public Plant getPlant() {
@@ -37,12 +42,21 @@ public class ActivityLog {
         this.pin = pin;
     }
 
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
+
     @Override
     public String toString() {
         return "ActivityLog{" +
                 "plant=" + plant +
                 ", history=" + history +
                 ", pin=" + pin +
+                ", macAddress='" + macAddress + '\'' +
                 '}';
     }
 
