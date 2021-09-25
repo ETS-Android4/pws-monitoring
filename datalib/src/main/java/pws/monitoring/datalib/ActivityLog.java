@@ -3,6 +3,7 @@ package pws.monitoring.datalib;
 import java.util.ArrayList;
 
 public class ActivityLog {
+    String id;
     Plant plant;
     ArrayList<String> history;
     int pin;
@@ -11,11 +12,20 @@ public class ActivityLog {
     public ActivityLog() {
     }
 
-    public ActivityLog(Plant plant, ArrayList<String> history, int pin, String macAddress) {
+    public ActivityLog(String id, Plant plant, ArrayList<String> history, int pin, String macAddress) {
+        this.id = id;
         this.plant = plant;
         this.history = history;
         this.pin = pin;
         this.macAddress = macAddress;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Plant getPlant() {
@@ -53,7 +63,8 @@ public class ActivityLog {
     @Override
     public String toString() {
         return "ActivityLog{" +
-                "plant=" + plant +
+                "id='" + id + '\'' +
+                ", plant=" + plant +
                 ", history=" + history +
                 ", pin=" + pin +
                 ", macAddress='" + macAddress + '\'' +

@@ -1,6 +1,7 @@
 package pws.monitoring.datalib;
 
 public class Plant {
+    String id;
     String commonName;
     String latinName;
     int light;
@@ -13,7 +14,8 @@ public class Plant {
     public Plant() {
     }
 
-    public Plant(String commonName, String latinName, int light, int humidity, int temperature, int moisture, int frequency, int modifier) {
+    public Plant(String id, String commonName, String latinName, int light, int humidity, int temperature, int moisture, int frequency, int modifier) {
+        this.id = id;
         this.commonName = commonName;
         this.latinName = latinName;
         this.light = light;
@@ -22,6 +24,14 @@ public class Plant {
         this.moisture = moisture;
         this.frequency = frequency;
         this.modifier = modifier;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCommonName() {
@@ -91,7 +101,8 @@ public class Plant {
     @Override
     public String toString() {
         return "Plant{" +
-                "commonName='" + commonName + '\'' +
+                "id='" + id + '\'' +
+                ", commonName='" + commonName + '\'' +
                 ", latinName='" + latinName + '\'' +
                 ", light=" + light +
                 ", humidity=" + humidity +

@@ -1,6 +1,7 @@
 package pws.monitoring.datalib;
 
 public class Notification {
+    String id;
     String title;
     String type;
     String note;
@@ -10,12 +11,21 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(String title, String type, String note, String dateTime, boolean read) {
+    public Notification(String id, String title, String type, String note, String dateTime, boolean read) {
+        this.id = id;
         this.title = title;
         this.type = type;
         this.note = note;
         this.dateTime = dateTime;
         this.read = read;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -61,19 +71,12 @@ public class Notification {
     @Override
     public String toString() {
         return "Notification{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
                 ", note='" + note + '\'' +
                 ", dateTime='" + dateTime + '\'' +
                 ", read=" + read +
                 '}';
-    }
-
-    boolean isIdentical(Notification n){
-        if(title.equals(n.getTitle()) && type.equals(n.getType())
-        && note.equals(n.getNote()) && dateTime.equals(n.getDateTime())){
-            return true;
-        }
-        return false;
     }
 }

@@ -3,6 +3,7 @@ package pws.monitoring.datalib;
 import java.util.ArrayList;
 
 public class User {
+    String id;
     String email;
     String password;
     String ip;
@@ -22,7 +23,8 @@ public class User {
         notifications = new ArrayList<>();
     }
 
-    public User(String email, String password, String ip,  ArrayList<ActivityLog> logger, ArrayList<Notification> notifications) {
+    public User(String id, String email, String password, String ip, ArrayList<ActivityLog> logger, ArrayList<Notification> notifications) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.ip = ip;
@@ -115,7 +117,7 @@ public class User {
 
     public void addNotification(Notification notification){
         for(Notification n : notifications){
-            if(!n.isIdentical(notification)){
+            if(!n.getId().equals(notification.getId())){
                 notifications.add(notification);
             }
         }
@@ -123,7 +125,7 @@ public class User {
 
     public void removeNotification(Notification notification){
         for(Notification n : notifications){
-            if(n.isIdentical(notification)){
+            if(n.getId().equals(notification.getId())){
                 notifications.remove(n);
             }
         }
