@@ -1,21 +1,26 @@
 package pws.monitoring.datalib;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
-public class ActivityLog {
+public class Recipient {
+    @SerializedName(value = "_id", alternate = "id")
     String id;
     Plant plant;
-    ArrayList<String> history;
-    int pin;
+    @SerializedName(value = "mac_address", alternate = "macAddress")
     String macAddress;
+    int pin;
+    @SerializedName(value = "watering_log", alternate = "wateringLog")
+    ArrayList<String> wateringLog;
 
-    public ActivityLog() {
+    public Recipient() {
     }
 
-    public ActivityLog(String id, Plant plant, ArrayList<String> history, int pin, String macAddress) {
+    public Recipient(String id, Plant plant, ArrayList<String> wateringLog, int pin, String macAddress) {
         this.id = id;
         this.plant = plant;
-        this.history = history;
+        this.wateringLog = wateringLog;
         this.pin = pin;
         this.macAddress = macAddress;
     }
@@ -36,12 +41,12 @@ public class ActivityLog {
         this.plant = plant;
     }
 
-    public ArrayList<String> getHistory() {
-        return history;
+    public ArrayList<String> getWateringLog() {
+        return wateringLog;
     }
 
-    public void setHistory(ArrayList<String> history) {
-        this.history = history;
+    public void setWateringLog(ArrayList<String> wateringLog) {
+        this.wateringLog = wateringLog;
     }
 
     public int getPin() {
@@ -65,21 +70,21 @@ public class ActivityLog {
         return "ActivityLog{" +
                 "id='" + id + '\'' +
                 ", plant=" + plant +
-                ", history=" + history +
+                ", wateringLog=" + wateringLog +
                 ", pin=" + pin +
                 ", macAddress='" + macAddress + '\'' +
                 '}';
     }
 
     public void addDateTime(String dateTime){
-        if(!history.contains(dateTime)) {
-            history.add(dateTime);
+        if(!wateringLog.contains(dateTime)) {
+            wateringLog.add(dateTime);
         }
     }
 
     public void removeDateTime(String dateTime){
-        if(history.contains(dateTime)) {
-            history.remove(dateTime);
+        if(wateringLog.contains(dateTime)) {
+            wateringLog.remove(dateTime);
         }
     }
 }

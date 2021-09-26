@@ -1,10 +1,14 @@
 package pws.monitoring.datalib;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Notification {
+    @SerializedName(value = "_id", alternate = "id")
     String id;
     String title;
     String type;
     String note;
+    @SerializedName(value = "date_time", alternate = "dateTime")
     String dateTime;
     boolean read;
 

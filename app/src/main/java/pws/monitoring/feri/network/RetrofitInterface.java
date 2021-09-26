@@ -6,7 +6,7 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 public interface RetrofitInterface {
-    @POST("/users/")
+    @POST("/users/register")
     Observable<User> register(@Body User user);
 
     @POST("/users/login")

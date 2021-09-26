@@ -1,8 +1,13 @@
 package pws.monitoring.datalib;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Plant {
+    @SerializedName(value = "_id", alternate = "id")
     String id;
+    @SerializedName(value = "common_name", alternate = "commonName")
     String commonName;
+    @SerializedName(value = "latin_name", alternate = "latinName")
     String latinName;
     int light;
     int humidity;

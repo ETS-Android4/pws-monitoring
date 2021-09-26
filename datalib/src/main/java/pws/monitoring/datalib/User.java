@@ -1,17 +1,20 @@
 package pws.monitoring.datalib;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 public class User {
+    @SerializedName(value = "_id", alternate = "id")
     String id;
     String email;
     String password;
     String ip;
-    ArrayList<ActivityLog> logger;
+    ArrayList<Recipient> recipients;
     ArrayList<Notification> notifications;
 
     public User() {
-        logger = new ArrayList<>();
+        recipients = new ArrayList<>();
         notifications = new ArrayList<>();
     }
 
@@ -19,17 +22,25 @@ public class User {
         this.email = email;
         this.password = password;
         this.ip = ip;
-        logger = new ArrayList<>();
+        recipients = new ArrayList<>();
         notifications = new ArrayList<>();
     }
 
-    public User(String id, String email, String password, String ip, ArrayList<ActivityLog> logger, ArrayList<Notification> notifications) {
+    public User(String id, String email, String password, String ip, ArrayList<Recipient> recipients, ArrayList<Notification> notifications) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.ip = ip;
-        this.logger = logger;
+        this.recipients = recipients;
         this.notifications = notifications;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -56,12 +67,12 @@ public class User {
         this.ip = ip;
     }
 
-    public ArrayList<ActivityLog> getLogger() {
-        return logger;
+    public ArrayList<Recipient> getRecipients() {
+        return recipients;
     }
 
-    public void setLogger(ArrayList<ActivityLog> logger) {
-        this.logger = logger;
+    public void setRecipients(ArrayList<Recipient> recipients) {
+        this.recipients = recipients;
     }
 
     public ArrayList<Notification> getNotifications() {
@@ -75,32 +86,33 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", ip='" + ip + '\'' +
-                ", logger=" + logger +
+                ", recipients=" + recipients +
                 ", notifications=" + notifications +
                 '}';
     }
 
-    public void addPlant(ActivityLog log){
-        for(ActivityLog a: logger){
+    public void addPlant(Recipient log){
+        for(Recipient a: recipients){
             if(!a.getPlant().getLatinName().equals(log.getPlant().getLatinName())){
-                logger.add(log);
+                recipients.add(log);
             }
         }
     }
 
-    public void removePlant(ActivityLog log){
-        for(ActivityLog a: logger){
+    public void removePlant(Recipient log){
+        for(Recipient a: recipients){
             if(a.getPlant().getLatinName().equals(log.getPlant().getLatinName())){
-                logger.remove(log);
+                recipients.remove(log);
             }
         }
     }
 
     public void addLog(Plant p, String dt){
-        for(ActivityLog a: logger){
+        for(Recipient a: recipients){
             if(a.getPlant().getLatinName().equals(p.getLatinName())){
                 a.addDateTime(dt);
             }
@@ -108,7 +120,7 @@ public class User {
     }
 
     public void removeLog(Plant p, String dt){
-        for(ActivityLog a: logger){
+        for(Recipient a: recipients){
             if(a.getPlant().getLatinName().equals(p.getLatinName())){
                 a.removeDateTime(dt);
             }
