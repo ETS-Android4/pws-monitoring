@@ -3,6 +3,7 @@ package pws.monitoring.feri.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -104,8 +105,9 @@ public class LogInActivity extends AppCompatActivity {
 
     private void handleResponse(User user) {
         Log.i("LOGIN", user.toString());
-        //Intent intent = new Intent(this, UserNavigationActivity.class);
-        //startActivity(intent);
+        ApplicationState.saveLoggedUser(user);
+        Intent intent = new Intent(this, NavigationActivity.class);
+        startActivity(intent);
     }
 
     private void handleError(Throwable error) {
@@ -123,5 +125,4 @@ public class LogInActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), error.getLocalizedMessage(),  Toast.LENGTH_LONG).show();
         }
     }
-
 }

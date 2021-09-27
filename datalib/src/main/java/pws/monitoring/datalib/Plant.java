@@ -14,12 +14,21 @@ public class Plant {
     int temperature;
     int moisture;
     int frequency;
-    int modifier;
+    @SerializedName(value = "moisture_modifier", alternate = "moistureModifier")
+    int moistureModifier;
+    @SerializedName(value = "frequency_modifier", alternate = "frequencyModifier")
+    int frequencyModifier;
+    @SerializedName(value = "growth_month", alternate = "growingSeason")
+    int growthMonth;
+    @SerializedName(value = "hibernation_month", alternate = "hibernationSeason")
+    int hibernationMonth;
 
     public Plant() {
     }
 
-    public Plant(String id, String commonName, String latinName, int light, int humidity, int temperature, int moisture, int frequency, int modifier) {
+    public Plant(String id, String commonName, String latinName, int light, int humidity,
+                 int temperature, int moisture, int frequency, int moistureModifier,
+                 int frequencyModifier, int growingSeason, int hibernationSeason) {
         this.id = id;
         this.commonName = commonName;
         this.latinName = latinName;
@@ -28,7 +37,10 @@ public class Plant {
         this.temperature = temperature;
         this.moisture = moisture;
         this.frequency = frequency;
-        this.modifier = modifier;
+        this.moistureModifier = moistureModifier;
+        this.frequencyModifier = frequencyModifier;
+        this.growthMonth = growingSeason;
+        this.hibernationMonth = hibernationSeason;
     }
 
     public String getId() {
@@ -95,12 +107,36 @@ public class Plant {
         this.frequency = frequency;
     }
 
-    public int getModifier() {
-        return modifier;
+    public int getMoistureModifier() {
+        return moistureModifier;
     }
 
-    public void setModifier(int modifier) {
-        this.modifier = modifier;
+    public int getFrequencyModifier() {
+        return frequencyModifier;
+    }
+
+    public void setFrequencyModifier(int frequencyModifier) {
+        this.frequencyModifier = frequencyModifier;
+    }
+
+    public int getGrowthMonth() {
+        return growthMonth;
+    }
+
+    public void setGrowthMonth(int growthMonth) {
+        this.growthMonth = growthMonth;
+    }
+
+    public int getHibernationMonth() {
+        return hibernationMonth;
+    }
+
+    public void setHibernationMonth(int hibernationMonth) {
+        this.hibernationMonth = hibernationMonth;
+    }
+
+    public void setMoistureModifier(int moistureModifier) {
+        this.moistureModifier = moistureModifier;
     }
 
     @Override
@@ -114,7 +150,10 @@ public class Plant {
                 ", temperature=" + temperature +
                 ", moisture=" + moisture +
                 ", frequency=" + frequency +
-                ", modifier=" + modifier +
+                ", moistureModifier=" + moistureModifier +
+                ", frequencyModifier=" + frequencyModifier +
+                ", growthMonth=" + growthMonth +
+                ", hibernationMonth=" + hibernationMonth +
                 '}';
     }
 }
