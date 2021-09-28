@@ -14,8 +14,6 @@ public class User {
     ArrayList<Notification> notifications;
 
     public User() {
-        recipients = new ArrayList<>();
-        notifications = new ArrayList<>();
     }
 
     public User(String email, String password, String ip) {

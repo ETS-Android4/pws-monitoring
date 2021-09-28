@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_account"
-        android:name="pws.monitoring.feri.fragments.account.AccountFragment"
+        android:name="pws.monitoring.feri.fragments.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="pws.monitoring.feri.fragments.dashboard.DashboardFragment"
+        android:name="pws.monitoring.feri.fragments.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="pws.monitoring.feri.fragments.notifications.NotificationsFragment"
+        android:name="pws.monitoring.feri.fragments.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

@@ -125,4 +125,10 @@ public class LogInActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), error.getLocalizedMessage(),  Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        subscription.unsubscribe();
+    }
 }
