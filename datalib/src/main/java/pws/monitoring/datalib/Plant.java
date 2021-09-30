@@ -22,13 +22,15 @@ public class Plant {
     int growthMonth;
     @SerializedName(value = "hibernation_month", alternate = "hibernationSeason")
     int hibernationMonth;
+    boolean customized;
 
     public Plant() {
     }
 
     public Plant(String id, String commonName, String latinName, int light, int humidity,
-                 int temperature, int moisture, int frequency, int moistureModifier,
-                 int frequencyModifier, int growingSeason, int hibernationSeason) {
+                 int temperature, int moisture, int frequency,
+                 int moistureModifier, int frequencyModifier, int growthMonth,
+                 int hibernationMonth, boolean customized) {
         this.id = id;
         this.commonName = commonName;
         this.latinName = latinName;
@@ -39,8 +41,9 @@ public class Plant {
         this.frequency = frequency;
         this.moistureModifier = moistureModifier;
         this.frequencyModifier = frequencyModifier;
-        this.growthMonth = growingSeason;
-        this.hibernationMonth = hibernationSeason;
+        this.growthMonth = growthMonth;
+        this.hibernationMonth = hibernationMonth;
+        this.customized = customized;
     }
 
     public String getId() {
@@ -139,6 +142,14 @@ public class Plant {
         this.moistureModifier = moistureModifier;
     }
 
+    public boolean isCustomized() {
+        return customized;
+    }
+
+    public void setCustomized(boolean customized) {
+        this.customized = customized;
+    }
+
     @Override
     public String toString() {
         return "Plant{" +
@@ -154,6 +165,7 @@ public class Plant {
                 ", frequencyModifier=" + frequencyModifier +
                 ", growthMonth=" + growthMonth +
                 ", hibernationMonth=" + hibernationMonth +
+                ", customized=" + customized +
                 '}';
     }
 }

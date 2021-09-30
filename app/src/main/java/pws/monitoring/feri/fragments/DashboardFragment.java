@@ -7,10 +7,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -25,14 +31,9 @@ import pws.monitoring.feri.events.OnRecipientShow;
 
 
 public class DashboardFragment extends Fragment {
-    private RecyclerView recipientsRecyclerView;
-    private RecipientAdapter recipientAdapter;
-
-    Button buttonSearch;
-    Button buttonCalendar;
-    Button buttonAdd;
-
-    User user;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private TabCollectionAdapter tabCollectionAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,81 +45,43 @@ public class DashboardFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_dashboard, container, false);
 
-        bindGUI(rootView);
-        bindValues();
-
-        user = ApplicationState.loadLoggedUser();
 
         return rootView;
     }
 
-    private void bindGUI(ViewGroup v) {
-        recipientsRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerViewRecipients);
-        buttonSearch = (Button) v.findViewById(R.id.buttonSearch);
-        buttonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //modal
-            }
-        });
-        buttonCalendar = (Button) v.findViewById(R.id.buttonCalendar);
-        buttonCalendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //open calendar fragment
-            }
-        });
-        buttonAdd = (Button) v.findViewById(R.id.buttonAdd);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //QR code scanner
-            }
-        });
-    }
-
-
-    private void bindValues() {
-        recipientAdapter = new RecipientAdapter(requireContext(), user.getRecipients());
-        recipientsRecyclerView.setAdapter(recipientAdapter);
-        recipientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tabCollectionAdapter = new TabCollectionAdapter(this);
+        viewPager = view.findViewById(R.id.viewpager);
+        viewPager.setAdapter(tabCollectionAdapter);
+        tabLayout = view.findViewById(R.id.tabs);
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if(position == 0) {
+                tab.setText("Recipients");
+            } else {
+                tab.setText("History");
+            }
+        }).attach();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
+    public class TabCollectionAdapter extends FragmentStateAdapter {
+        public TabCollectionAdapter(Fragment fragment) {
+            super(fragment);
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OnRecipientShow event) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        RecipientDetailsFragment recipientFragment = new RecipientDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("recipient", ApplicationState.getGson().toJson(event.getRecipient()));
-        recipientFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation, recipientFragment).commit();
-    }
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            if(position == 0)
+                return new RecipientListFragment();
+            else
+                return new CalendarFragment();
+        }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OnRecipientModify event) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        RecipientModifyFragment recipientFragment = new RecipientModifyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("recipient", ApplicationState.getGson().toJson(event.getRecipient()));
-        recipientFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation, recipientFragment).commit();
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
 }

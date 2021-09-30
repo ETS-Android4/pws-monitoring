@@ -9,12 +9,17 @@
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/activity_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_account.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_calendar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_dashboard.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_notifications.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipient_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipient_details.xml" value="0.67" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipient_modify.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipients_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_watering_history.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/item_notification.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/item_recipient.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/item_wplant.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/recipients_list_fragment.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

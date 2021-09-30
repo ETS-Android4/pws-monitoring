@@ -72,6 +72,7 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
         public void bindValues(Notification n) {
             title.setText(n.getTitle());
             note.setText(n.getNote());
+            dateTime.setText(n.getDateTime());
             buttonRead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

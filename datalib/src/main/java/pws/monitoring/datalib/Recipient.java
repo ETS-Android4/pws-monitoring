@@ -87,4 +87,12 @@ public class Recipient {
             wateringLog.remove(dateTime);
         }
     }
+
+    public boolean hasDate(String dateTime){
+        for(String dt : wateringLog){
+            if(dt.equals(dateTime))
+                return true;
+        }
+        return false;
+    }
 }
