@@ -1,13 +1,16 @@
 package pws.monitoring.feri.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +27,8 @@ import pws.monitoring.feri.R;
 import pws.monitoring.feri.adapters.RecipientAdapter;
 import pws.monitoring.feri.events.OnRecipientModify;
 import pws.monitoring.feri.events.OnRecipientShow;
+import pws.monitoring.feri.events.OnUserUpdated;
+import pws.monitoring.feri.modals.AddRecipientModal;
 
 public class RecipientListFragment extends Fragment {
 
@@ -43,10 +48,10 @@ public class RecipientListFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_recipients_list, container, false);
 
+        user = ApplicationState.loadLoggedUser();
+
         bindGUI(rootView);
         bindValues();
-
-        user = ApplicationState.loadLoggedUser();
 
         return rootView;
     }
@@ -57,7 +62,9 @@ public class RecipientListFragment extends Fragment {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //QR code scanner
+                AddRecipientModal modal = AddRecipientModal.newInstance();
+                modal.show(getParentFragmentManager(), AddRecipientModal.TAG);
+
             }
         });
     }
@@ -98,6 +105,13 @@ public class RecipientListFragment extends Fragment {
         bundle.putString("recipient", ApplicationState.getGson().toJson(event.getRecipient()));
         recipientFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation, recipientFragment).commit();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnUserUpdated event) {
+        user = ApplicationState.loadLoggedUser();
+        recipientAdapter = new RecipientAdapter(requireContext(), user.getRecipients());
+        recipientsRecyclerView.setAdapter(recipientAdapter);
     }
 
     @Override

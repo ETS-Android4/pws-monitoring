@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="15dp"
+    android:paddingTop="15dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="5dp"
     tools:context=".fragments.NotificationsFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -36,8 +40,6 @@
             android:ems="10"
             android:hint="Search"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline15"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +48,6 @@
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:text="S"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline15"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,9 +55,8 @@
             android:id="@+id/buttonFilter"
             android:layout_width="46dp"
             android:layout_height="46dp"
+            android:layout_marginStart="30dp"
             android:text="F"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonSearchNotifications"
             app:layout_constraintTop_toTopOf="parent" />
 

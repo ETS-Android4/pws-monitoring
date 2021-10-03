@@ -1,6 +1,7 @@
 package pws.monitoring.feri.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,9 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
     @NonNull
     @Override
     public NotificationItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipient,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification,
                 parent, false);
-        NotificationAdapter.NotificationItem viewHolder = new NotificationAdapter.NotificationItem(view);
-        return viewHolder;
+        return new NotificationItem(view);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package pws.monitoring.feri.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -9,6 +11,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import java.util.Objects;
 
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.databinding.ActivityNavigationBinding;
@@ -32,8 +36,8 @@ public class NavigationActivity extends AppCompatActivity {
                 R.id.navigation_account, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_navigation);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
     }
 
 }

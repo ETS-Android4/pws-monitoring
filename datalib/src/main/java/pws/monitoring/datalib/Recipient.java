@@ -8,21 +8,23 @@ public class Recipient {
     @SerializedName(value = "_id", alternate = "id")
     String id;
     Plant plant;
-    @SerializedName(value = "mac_address", alternate = "macAddress")
-    String macAddress;
-    int pin;
-    @SerializedName(value = "watering_log", alternate = "wateringLog")
-    ArrayList<String> wateringLog;
+    @SerializedName(value = "byte_address", alternate = "byteAddress")
+    String byteAddress;
+    @SerializedName(value = "relay_pin", alternate = "relayPin")
+    int relayPin;
+    @SerializedName(value = "water_log", alternate = "waterLog")
+    ArrayList<String> waterLog;
 
     public Recipient() {
+        waterLog = new ArrayList<>();
     }
 
-    public Recipient(String id, Plant plant, ArrayList<String> wateringLog, int pin, String macAddress) {
+    public Recipient(String id, Plant plant, ArrayList<String> waterLog, int relayPin, String byteAddress) {
         this.id = id;
         this.plant = plant;
-        this.wateringLog = wateringLog;
-        this.pin = pin;
-        this.macAddress = macAddress;
+        this.waterLog = waterLog;
+        this.relayPin = relayPin;
+        this.byteAddress = byteAddress;
     }
 
     public String getId() {
@@ -41,55 +43,55 @@ public class Recipient {
         this.plant = plant;
     }
 
-    public ArrayList<String> getWateringLog() {
-        return wateringLog;
+    public ArrayList<String> getWaterLog() {
+        return waterLog;
     }
 
-    public void setWateringLog(ArrayList<String> wateringLog) {
-        this.wateringLog = wateringLog;
+    public void setWaterLog(ArrayList<String> waterLog) {
+        this.waterLog = waterLog;
     }
 
-    public int getPin() {
-        return pin;
+    public int getRelayPin() {
+        return relayPin;
     }
 
-    public void setPin(int pin) {
-        this.pin = pin;
+    public void setRelayPin(int relayPin) {
+        this.relayPin = relayPin;
     }
 
-    public String getMacAddress() {
-        return macAddress;
+    public String getByteAddress() {
+        return byteAddress;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setByteAddress(String byteAddress) {
+        this.byteAddress = byteAddress;
     }
 
     @Override
     public String toString() {
-        return "ActivityLog{" +
+        return "Recipient{" +
                 "id='" + id + '\'' +
                 ", plant=" + plant +
-                ", wateringLog=" + wateringLog +
-                ", pin=" + pin +
-                ", macAddress='" + macAddress + '\'' +
+                ", byteAddress='" + byteAddress + '\'' +
+                ", relayPin=" + relayPin +
+                ", waterLog=" + waterLog +
                 '}';
     }
 
     public void addDateTime(String dateTime){
-        if(!wateringLog.contains(dateTime)) {
-            wateringLog.add(dateTime);
+        if(!waterLog.contains(dateTime)) {
+            waterLog.add(dateTime);
         }
     }
 
     public void removeDateTime(String dateTime){
-        if(wateringLog.contains(dateTime)) {
-            wateringLog.remove(dateTime);
+        if(waterLog.contains(dateTime)) {
+            waterLog.remove(dateTime);
         }
     }
 
     public boolean hasDate(String dateTime){
-        for(String dt : wateringLog){
+        for(String dt : waterLog){
             if(dt.equals(dateTime))
                 return true;
         }

@@ -38,7 +38,7 @@ public class ApplicationState extends Application {
 
     public static User loadLoggedUser() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        String json = sharedPreferences.getString(ApplicationConfig.USER_KEY, "");
+        String json = sharedPreferences.getString(ApplicationConfig.USER_KEY, null);
         if (json != null) {
             loggedUser = getGson().fromJson(json, User.class);
             editor.apply();

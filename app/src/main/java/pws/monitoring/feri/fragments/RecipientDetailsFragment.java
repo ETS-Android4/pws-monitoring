@@ -4,16 +4,42 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.w3c.dom.Text;
+
+import pws.monitoring.datalib.Recipient;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 
 public class RecipientDetailsFragment extends Fragment {
     User user;
+    Recipient recipient;
+
+    TextView textViewPlantNames;
+    TextView textViewPlantTechData;
+    TextView rowPLight;
+    TextView rowRLight;
+    TextView rowPHumidity;
+    TextView rowRHumidity;
+    TextView rowPTemperature;
+    TextView rowRTemperature;
+    TextView rowPMoisture;
+    TextView rowRMoisture;
+    TextView rowGrowthMonth;
+    TextView rowWinterMonth;
+    TextView rowGrowthMoisture;
+    TextView rowWinterMoisture;
+    TextView rowGrowingFrequency;
+    TextView rowWinterFrequency;
+    Button buttonRefresh;
+    Button buttonWater;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -25,19 +51,55 @@ public class RecipientDetailsFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_recipient_details, container, false);
 
+        user = ApplicationState.loadLoggedUser();
+        Bundle bundle = getArguments();
+        recipient = ApplicationState.getGson().fromJson(bundle.getString("recipient"),
+                Recipient.class);
+
         bindGUI(rootView);
         bindValues();
-
-        user = ApplicationState.loadLoggedUser();
 
         return rootView;
     }
 
     private void bindValues() {
+        textViewPlantNames.setText(recipient.getPlant().getCommonName() + " (" + recipient.getPlant().getLatinName() + ")");
+        textViewPlantTechData.setText("Device IP: " + user.getIp() + " on byte address " + recipient.getByteAddress() +
+                " and pin " + String.valueOf(recipient.getRelayPin()));
+        rowPLight.setText(String.valueOf(recipient.getPlant().getLight()));
+        rowPHumidity.setText(String.valueOf(recipient.getPlant().getHumidity()));
+        rowPTemperature.setText(String.valueOf(recipient.getPlant().getTemperature()));
+        rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
+        rowGrowthMonth.setText(String.valueOf(recipient.getPlant().getGrowthMonth()));
+        rowWinterMonth.setText(String.valueOf(recipient.getPlant().getHibernationMonth()));
+        rowGrowthMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
+        rowWinterMoisture.setText(String.valueOf(recipient.getPlant().getMoisture() -
+                recipient.getPlant().getMoistureModifier()));
+        rowGrowingFrequency.setText(String.valueOf(recipient.getPlant().getFrequency()));
+        rowWinterFrequency.setText(String.valueOf(recipient.getPlant().getFrequency() -
+                recipient.getPlant().getFrequencyModifier()));
     }
 
-    private void bindGUI(ViewGroup v) {
 
+    private void bindGUI(ViewGroup v) {
+        textViewPlantNames = (TextView) v.findViewById(R.id.textViewPlantNames) ;
+        textViewPlantTechData= (TextView) v.findViewById(R.id.textViewPlantTechData) ;
+        rowPLight = (TextView) v.findViewById(R.id.rowPLight) ;
+        rowRLight = (TextView) v.findViewById(R.id.rowRLight) ;
+        rowPHumidity = (TextView) v.findViewById(R.id.rowPHumidity) ;
+        rowRHumidity = (TextView) v.findViewById(R.id.rowRHumidity) ;
+        rowPTemperature  = (TextView) v.findViewById(R.id.rowPTemperature) ;
+        rowRTemperature = (TextView) v.findViewById(R.id.rowRTemperature) ;
+        rowPMoisture = (TextView) v.findViewById(R.id.rowPMoisture) ;
+        rowRMoisture = (TextView) v.findViewById(R.id.rowRMoisture) ;
+        rowGrowthMonth = (TextView) v.findViewById(R.id.rowGrowthMonth) ;
+        rowWinterMonth = (TextView) v.findViewById(R.id.rowWinterMonth) ;
+        rowGrowthMoisture = (TextView) v.findViewById(R.id.rowGrowthMoisture) ;
+        rowWinterMoisture = (TextView) v.findViewById(R.id.rowWinterMoisture) ;
+        rowGrowingFrequency = (TextView) v.findViewById(R.id.rowGrowingFrequency) ;
+        rowWinterFrequency = (TextView) v.findViewById(R.id.rowWinterFrequency) ;
+        buttonRefresh = (Button) v.findViewById(R.id.buttonRefresh);
+        buttonWater = (Button) v.findViewById(R.id.buttonWater);
     }
 
     @Override

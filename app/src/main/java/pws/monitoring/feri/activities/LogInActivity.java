@@ -89,7 +89,6 @@ public class LogInActivity extends AppCompatActivity {
             user = new User();
             user.setEmail(edtEmail.getText().toString());
             user.setPassword(edtPassword.getText().toString());
-            //API REQUEST
             loginProcess();
         } else {
             Toast.makeText(getBaseContext(), "All fields are mandatory", Toast.LENGTH_LONG).show();
@@ -100,10 +99,21 @@ public class LogInActivity extends AppCompatActivity {
         subscription.add(NetworkUtil.getRetrofit().login(user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse, this::handleError));
+                .subscribe(this::handleResponseLogIn, this::handleError));
     }
 
-    private void handleResponse(User user) {
+    private void getUser(String id){
+        subscription.add(NetworkUtil.getRetrofit().getUser(id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseUser, this::handleError));
+    }
+
+    private void handleResponseLogIn(User user) {
+       getUser(user.getId());
+    }
+
+    private void handleResponseUser(User user) {
         Log.i("LOGIN", user.toString());
         ApplicationState.saveLoggedUser(user);
         Intent intent = new Intent(this, NavigationActivity.class);

@@ -20,8 +20,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.ip = ip;
-        recipients = new ArrayList<>();
-        notifications = new ArrayList<>();
     }
 
     public User(String id, String email, String password, String ip, ArrayList<Recipient> recipients, ArrayList<Notification> notifications) {

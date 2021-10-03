@@ -4,21 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 
-import pws.monitoring.datalib.Notification;
 import pws.monitoring.datalib.Recipient;
 import pws.monitoring.feri.R;
-import pws.monitoring.feri.events.OnNotificationDelete;
-import pws.monitoring.feri.events.OnNotificationRead;
 
 public class WPlantsAdapter extends RecyclerView.Adapter <WPlantsAdapter.WPlantItem> {
     ArrayList<Recipient> recipients;
@@ -68,7 +62,7 @@ public class WPlantsAdapter extends RecyclerView.Adapter <WPlantsAdapter.WPlantI
             if(r.hasDate(dateTime)){
                 title.setText(dateTime);
                 String sb = r.getPlant().getCommonName() + " on " +
-                        r.getMacAddress() + ", " + r.getPin();
+                        r.getByteAddress() + ", " + r.getRelayPin();
                 subtitle.setText(sb);
             }
         }

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "pws.monitoring.feri"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -51,5 +51,5 @@ dependencies {
     implementation 'io.reactivex:rxjava:1.2.0'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'org.greenrobot:eventbus:3.2.0'
-    implementation 'com.applandeo:material-calendar-view:1.4.0'
+    implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
 }

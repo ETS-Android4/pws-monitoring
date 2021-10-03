@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,11 +22,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import pws.monitoring.datalib.Notification;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.NavigationActivity;
 import pws.monitoring.feri.adapters.NotificationAdapter;
 import pws.monitoring.feri.adapters.RecipientAdapter;
 import pws.monitoring.feri.events.OnNotificationDelete;
@@ -60,11 +63,11 @@ public class NotificationsFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_notifications, container, false);
 
-        bindGUI(rootView);
-        bindValues();
-
         subscription = new CompositeSubscription();
         user = ApplicationState.loadLoggedUser();
+
+        bindGUI(rootView);
+        bindValues();
 
         return rootView;
     }
