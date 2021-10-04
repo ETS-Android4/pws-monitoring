@@ -69,7 +69,7 @@ public class RecipientAdapter extends RecyclerView.Adapter <RecipientAdapter
 
         public void bindValues(Recipient r){
             commonName.setText(r.getPlant().getCommonName());
-            macAddress.setText(r.getByteAddress());
+            macAddress.setText(r.getByteAddress() + ":" + String.valueOf(r.getRelayPin()));
             buttonShowDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

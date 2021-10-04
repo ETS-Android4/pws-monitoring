@@ -3,51 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="15dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/guideline16"
+        app:layout_constraintEnd_toStartOf="@+id/buttonRead"
+        app:layout_constraintStart_toEndOf="@+id/imageViewType"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.06" />
 
     <TextView
         android:id="@+id/textViewNote"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline16"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+        app:layout_constraintStart_toStartOf="@+id/textViewTitle"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
     <TextView
         android:id="@+id/textViewDateTime"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:text="TextView"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline16"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNote" />
+        app:layout_constraintEnd_toEndOf="@+id/textViewNote"
+        app:layout_constraintStart_toStartOf="@+id/textViewNote"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNote"
+        app:layout_constraintVertical_bias="0.4" />
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
         android:text="D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
@@ -60,5 +58,13 @@
         android:text="R"
         app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
         app:layout_constraintTop_toTopOf="@+id/textViewTitle" />
+
+    <ImageView
+        android:id="@+id/imageViewType"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

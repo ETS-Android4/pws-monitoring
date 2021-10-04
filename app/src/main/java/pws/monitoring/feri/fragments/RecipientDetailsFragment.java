@@ -12,10 +12,13 @@ import androidx.fragment.app.Fragment;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
+
 import pws.monitoring.datalib.Recipient;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.util.MonthUtil;
 
 public class RecipientDetailsFragment extends Fragment {
     User user;
@@ -69,15 +72,22 @@ public class RecipientDetailsFragment extends Fragment {
         rowPLight.setText(String.valueOf(recipient.getPlant().getLight()));
         rowPHumidity.setText(String.valueOf(recipient.getPlant().getHumidity()));
         rowPTemperature.setText(String.valueOf(recipient.getPlant().getTemperature()));
-        rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
-        rowGrowthMonth.setText(String.valueOf(recipient.getPlant().getGrowthMonth()));
-        rowWinterMonth.setText(String.valueOf(recipient.getPlant().getHibernationMonth()));
+        rowGrowthMonth.setText(MonthUtil.getMonthName(recipient.getPlant().getGrowthMonth()));
+        rowWinterMonth.setText(MonthUtil.getMonthName(recipient.getPlant().getHibernationMonth()));
         rowGrowthMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
         rowWinterMoisture.setText(String.valueOf(recipient.getPlant().getMoisture() -
                 recipient.getPlant().getMoistureModifier()));
         rowGrowingFrequency.setText(String.valueOf(recipient.getPlant().getFrequency()));
         rowWinterFrequency.setText(String.valueOf(recipient.getPlant().getFrequency() -
                 recipient.getPlant().getFrequencyModifier()));
+
+        if(MonthUtil.isWinterSeason(Calendar.getInstance().get(Calendar.MONTH)+1,
+                recipient.getPlant().getGrowthMonth(), recipient.getPlant().getHibernationMonth()))
+            rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture() - recipient.getPlant().getMoistureModifier()));
+        else
+            rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
+
+        //TODO bind sensor data to rows
     }
 
 
@@ -99,7 +109,19 @@ public class RecipientDetailsFragment extends Fragment {
         rowGrowingFrequency = (TextView) v.findViewById(R.id.rowGrowingFrequency) ;
         rowWinterFrequency = (TextView) v.findViewById(R.id.rowWinterFrequency) ;
         buttonRefresh = (Button) v.findViewById(R.id.buttonRefresh);
+        buttonRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO add command to refresh data from table
+            }
+        });
         buttonWater = (Button) v.findViewById(R.id.buttonWater);
+        buttonWater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO add command to water the plant
+            }
+        });
     }
 
     @Override

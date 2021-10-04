@@ -1,30 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline23"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.06" />
+    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline22"
@@ -39,9 +23,9 @@
         android:layout_height="wrap_content"
         android:text="Moisture: "
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPickerMoisture"
-        app:layout_constraintStart_toStartOf="@+id/guideline21"
-        app:layout_constraintTop_toTopOf="@+id/guideline20" />
+        app:layout_constraintBottom_toBottomOf="@+id/edtMMoisture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView5"
@@ -50,8 +34,8 @@
         android:layout_marginTop="20dp"
         android:text="Modifier:"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPickerMModifier"
-        app:layout_constraintStart_toStartOf="@+id/guideline21"
+        app:layout_constraintBottom_toBottomOf="@+id/edtMModifier"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
@@ -61,8 +45,8 @@
         android:layout_marginTop="20dp"
         android:text="Frequency: "
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPickerFreq"
-        app:layout_constraintStart_toStartOf="@+id/guideline21"
+        app:layout_constraintBottom_toBottomOf="@+id/edtFrequency"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
@@ -72,48 +56,145 @@
         android:layout_marginTop="20dp"
         android:text="Modifier: "
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPickerFModifier"
-        app:layout_constraintStart_toStartOf="@+id/guideline21"
+        app:layout_constraintBottom_toBottomOf="@+id/edtFModifier"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <NumberPicker
-        android:id="@+id/numberPickerMoisture"
-        android:layout_width="65dp"
-        android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toTopOf="@+id/guideline20" />
-
-    <NumberPicker
-        android:id="@+id/numberPickerMModifier"
-        android:layout_width="65dp"
-        android:layout_height="60dp"
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerMoisture" />
+        android:text="Plant:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonChangePlant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-    <NumberPicker
-        android:id="@+id/numberPickerFreq"
-        android:layout_width="65dp"
-        android:layout_height="60dp"
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerMModifier" />
+        android:text="Byte Address:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edtByteAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-    <NumberPicker
-        android:id="@+id/numberPickerFModifier"
-        android:layout_width="65dp"
-        android:layout_height="60dp"
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:text="Relay pin:"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edtRelayPin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <Button
+        android:id="@+id/buttonUpdateRecipient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Update R"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <EditText
+        android:id="@+id/edtMMoisture"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerFreq" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtMModifier"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/edtMMoisture" />
+
+    <EditText
+        android:id="@+id/edtFrequency"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/edtMModifier" />
+
+    <EditText
+        android:id="@+id/edtFModifier"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/edtFrequency" />
+
+    <EditText
+        android:id="@+id/edtByteAddress"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChangePlant" />
+
+    <EditText
+        android:id="@+id/edtRelayPin"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/edtByteAddress" />
+
+    <Button
+        android:id="@+id/buttonChangePlant"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="S"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/edtFModifier" />
+
+    <Button
+        android:id="@+id/buttonDeleteRecipient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="50dp"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonUpdatePlant" />
 
     <Button
         android:id="@+id/buttonUpdatePlant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update"
+        android:layout_marginTop="15dp"
+        android:text="Update P"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline23" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonUpdateRecipient" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

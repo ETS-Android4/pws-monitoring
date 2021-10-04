@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ import pws.monitoring.feri.events.OnRecipientModify;
 import pws.monitoring.feri.events.OnRecipientShow;
 
 public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapter.NotificationItem>{
-    private ArrayList<Notification> notifications;
+    public ArrayList<Notification> notifications;
 
     public NotificationAdapter(Context context, ArrayList<Notification> notifications) {
         this.notifications = notifications;
@@ -51,6 +52,7 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
         private TextView title;
         private TextView note;
         private TextView dateTime;
+        private ImageView imageView;
         private Button buttonRead;
         private Button buttonDelete;
 
@@ -64,6 +66,7 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
             title = (TextView) v.findViewById(R.id.textViewTitle);
             note = (TextView) v.findViewById(R.id.textViewNote);
             dateTime = (TextView) v.findViewById(R.id.textViewDateTime);
+            imageView = (ImageView) v.findViewById(R.id.imageViewType);
             buttonRead = (Button) v.findViewById(R.id.buttonRead);
             buttonDelete = (Button) v.findViewById(R.id.buttonDelete);
 
@@ -85,6 +88,14 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
                     EventBus.getDefault().post(new OnNotificationDelete(n));
                 }
             });
+            switch (n.getType()){
+                case "Warning":
+                    imageView.setImageResource(R.drawable.ic_baseline_warning_24);
+                    break;
+                case "Info":
+                    imageView.setImageResource(R.drawable.ic_baseline_info_24);
+                    break;
+            }
         }
     }
 }

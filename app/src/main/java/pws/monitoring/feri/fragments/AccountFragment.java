@@ -7,14 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
@@ -23,7 +19,6 @@ import java.io.IOException;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
-import pws.monitoring.feri.activities.NavigationActivity;
 import pws.monitoring.feri.network.NetworkUtil;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,8 +31,10 @@ public class AccountFragment extends Fragment {
     EditText edtIpDeviceUpdate;
     Button buttonUpdate;
     Button buttonLogout;
+    Button buttonDelete;
 
     private CompositeSubscription subscription;
+    User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +49,7 @@ public class AccountFragment extends Fragment {
         bindGUI(rootView);
         bindValues();
 
+        user = ApplicationState.loadLoggedUser();
         subscription = new CompositeSubscription();
 
         return rootView;
@@ -84,6 +82,13 @@ public class AccountFragment extends Fragment {
                 logoutUser();
             }
         });
+        buttonDelete = (Button) v.findViewById(R.id.buttonDeleteAccount);
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAccount();
+            }
+        });
     }
 
     private void bindValues(){
@@ -99,6 +104,18 @@ public class AccountFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUpdate, this::handleError));
+    }
+
+    private void deleteAccount(){
+        subscription.add(NetworkUtil.getRetrofit().removeUser(user.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseDelete, this::handleError));
+    }
+
+    private void handleResponseDelete(Void v) {
+        Toast.makeText(requireContext(), "Account deleted",  Toast.LENGTH_LONG).show();
+        getActivity().finish();
     }
 
     private void handleResponseUpdate(User user) {
