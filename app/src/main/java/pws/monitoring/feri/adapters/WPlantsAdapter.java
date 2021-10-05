@@ -1,6 +1,7 @@
 package pws.monitoring.feri.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class WPlantsAdapter extends RecyclerView.Adapter <WPlantsAdapter.WPlantI
     String pickedDate;
 
     public WPlantsAdapter(Context context, ArrayList<Recipient> recipients, String pickedDate) {
+        Log.i("WADAPTER", recipients.toString());
         this.recipients = recipients;
         this.pickedDate = pickedDate;
     }
@@ -59,12 +61,11 @@ public class WPlantsAdapter extends RecyclerView.Adapter <WPlantsAdapter.WPlantI
         }
 
         public void bindValues(Recipient r, String dateTime) {
-            if(r.hasDate(dateTime)){
-                title.setText(dateTime);
-                String sb = r.getPlant().getCommonName() + " on " +
-                        r.getByteAddress() + ", " + r.getRelayPin();
-                subtitle.setText(sb);
-            }
+            title.setText(dateTime);
+            String sb = r.getPlant().getCommonName() + " on " +
+                    r.getByteAddress() + ", " + r.getRelayPin();
+            subtitle.setText(sb);
+
         }
     }
 }

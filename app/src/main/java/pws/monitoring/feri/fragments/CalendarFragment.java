@@ -1,17 +1,27 @@
 package pws.monitoring.feri.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.applandeo.materialcalendarview.CalendarView;
+import com.applandeo.materialcalendarview.EventDay;
+import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,7 +29,9 @@ import java.util.Date;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.adapters.RecipientAdapter;
 import pws.monitoring.feri.adapters.WPlantsAdapter;
+import pws.monitoring.feri.events.OnUserUpdated;
 
 public class CalendarFragment extends Fragment {
     private RecyclerView recipientsRecyclerView;
@@ -27,6 +39,8 @@ public class CalendarFragment extends Fragment {
     private CalendarView calendarView;
 
     User user;
+    String strDate;
+    DateFormat dateFormat;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +52,7 @@ public class CalendarFragment extends Fragment {
                 R.layout.fragment_calendar, container, false);
 
         user = ApplicationState.loadLoggedUser();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         bindGUI(rootView);
         bindValues();
@@ -48,19 +63,58 @@ public class CalendarFragment extends Fragment {
     private void bindGUI(ViewGroup v) {
         recipientsRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerViewWPlants);
         calendarView = (CalendarView)v.findViewById(R.id.calendarView);
+        calendarView.setOnDayClickListener(new OnDayClickListener() {
+            @Override
+            public void onDayClick(EventDay eventDay) {
+                Date date = eventDay.getCalendar().getTime();
+                strDate = dateFormat.format(date);
+                Log.i("date", strDate);
+
+
+                user = ApplicationState.loadLoggedUser();
+                wPlantsAdapter = new WPlantsAdapter(requireContext(), user.getLogDateRecipients(strDate),
+                        strDate);
+                recipientsRecyclerView.setAdapter(wPlantsAdapter);
+            }
+        });
 
     }
 
     private void bindValues() {
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String strDate = dateFormat.format(date);
+        strDate = dateFormat.format(date);
 
-        wPlantsAdapter = new WPlantsAdapter(requireContext(), user.getRecipients(), strDate);
+        wPlantsAdapter = new WPlantsAdapter(requireContext(), user.getLogDateRecipients(strDate),
+                strDate);
         recipientsRecyclerView.setAdapter(wPlantsAdapter);
         recipientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //TODO HIGHLIGHT
+        calendarView.setDate(date);
+        try {
+            calendarView.setHighlightedDays((user.getWateringDates()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnUserUpdated event) {
+        user = ApplicationState.loadLoggedUser();
+        wPlantsAdapter = new WPlantsAdapter(requireContext(), user.getLogDateRecipients(strDate),
+                strDate);
+        recipientsRecyclerView.setAdapter(wPlantsAdapter);
     }
 
 }

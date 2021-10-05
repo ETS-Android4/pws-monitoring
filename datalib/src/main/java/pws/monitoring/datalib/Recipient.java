@@ -12,6 +12,8 @@ public class Recipient {
     String byteAddress;
     @SerializedName(value = "relay_pin", alternate = "relayPin")
     int relayPin;
+    @SerializedName(value = "moisture_pin", alternate = "moisturePin")
+    int moisturePin;
     @SerializedName(value = "water_log", alternate = "waterLog")
     ArrayList<String> waterLog;
 
@@ -19,12 +21,13 @@ public class Recipient {
         waterLog = new ArrayList<>();
     }
 
-    public Recipient(String id, Plant plant, ArrayList<String> waterLog, int relayPin, String byteAddress) {
+    public Recipient(String id, Plant plant, String byteAddress, int relayPin, int moisturePin, ArrayList<String> waterLog) {
         this.id = id;
         this.plant = plant;
-        this.waterLog = waterLog;
-        this.relayPin = relayPin;
         this.byteAddress = byteAddress;
+        this.relayPin = relayPin;
+        this.moisturePin = moisturePin;
+        this.waterLog = waterLog;
     }
 
     public String getId() {
@@ -67,6 +70,14 @@ public class Recipient {
         this.byteAddress = byteAddress;
     }
 
+    public int getMoisturePin() {
+        return moisturePin;
+    }
+
+    public void setMoisturePin(int moisturePin) {
+        this.moisturePin = moisturePin;
+    }
+
     @Override
     public String toString() {
         return "Recipient{" +
@@ -74,6 +85,7 @@ public class Recipient {
                 ", plant=" + plant +
                 ", byteAddress='" + byteAddress + '\'' +
                 ", relayPin=" + relayPin +
+                ", moisturePin=" + moisturePin +
                 ", waterLog=" + waterLog +
                 '}';
     }
@@ -92,7 +104,7 @@ public class Recipient {
 
     public boolean hasDate(String dateTime){
         for(String dt : waterLog){
-            if(dt.equals(dateTime))
+            if(dt.contains(dateTime))
                 return true;
         }
         return false;

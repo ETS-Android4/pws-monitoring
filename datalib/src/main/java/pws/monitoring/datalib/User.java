@@ -2,7 +2,12 @@ package pws.monitoring.datalib;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Console;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class User {
     @SerializedName(value = "_id", alternate = "id")
@@ -137,6 +142,39 @@ public class User {
                 notifications.remove(n);
             }
         }
+    }
+
+    public ArrayList<Calendar> getWateringDates() throws ParseException {
+        ArrayList<String> dates = recipients.get(0).getWaterLog();
+        for(int i=0; i < recipients.size(); i++){
+            if(recipients.get(i).getWaterLog().size() > 0) {
+                dates.remove(recipients.get(i).getWaterLog());
+                dates.addAll(recipients.get(i).getWaterLog());
+            }
+        }
+        System.out.println("Dates");
+        System.out.println(dates);
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        ArrayList<Calendar> calendars = new ArrayList<>();
+        for(String d: dates){
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateFormat.parse(d));
+            calendars.add(cal);
+        }
+        return calendars;
+    }
+
+    public ArrayList<Recipient> getLogDateRecipients(String date){
+        ArrayList<Recipient> r = new ArrayList<>();
+        for(Recipient rec: recipients){
+            if(rec.hasDate(date))
+                r.add(rec);
+        }
+
+        System.out.println("Recs");
+        System.out.println(r.toString());
+        return r;
     }
 
 }

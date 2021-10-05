@@ -21,37 +21,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Pin"
+        android:text="Relay pin"
         app:layout_constraintBottom_toBottomOf="@+id/editTextPin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline13"
+    <TextView
+        android:id="@+id/textViewPin2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.39" />
+        android:layout_marginTop="20dp"
+        android:text="Moisture pin"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPinMoisture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPin" />
 
     <Button
         android:id="@+id/buttonQrScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:text="QR Scan"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPin" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPinMoisture" />
 
     <EditText
         android:id="@+id/edtAddress"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="100dp"
         android:ems="10"
         android:hint="0000"
         android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/guideline13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewAddress"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -64,6 +69,17 @@
         android:inputType="number"
         app:layout_constraintStart_toStartOf="@+id/edtAddress"
         app:layout_constraintTop_toBottomOf="@+id/edtAddress" />
+
+    <EditText
+        android:id="@+id/editTextPinMoisture"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="1"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/edtAddress"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPin" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

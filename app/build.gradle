@@ -52,4 +52,5 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
+    implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
 }

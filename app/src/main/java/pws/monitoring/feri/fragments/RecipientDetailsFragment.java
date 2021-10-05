@@ -68,7 +68,8 @@ public class RecipientDetailsFragment extends Fragment {
     private void bindValues() {
         textViewPlantNames.setText(recipient.getPlant().getCommonName() + " (" + recipient.getPlant().getLatinName() + ")");
         textViewPlantTechData.setText("Device IP: " + user.getIp() + " on byte address " + recipient.getByteAddress() +
-                " and pin " + String.valueOf(recipient.getRelayPin()));
+                " and relay/moisture pins " + String.valueOf(recipient.getRelayPin()) + " " +
+                String.valueOf(recipient.getMoisturePin()));
         rowPLight.setText(String.valueOf(recipient.getPlant().getLight()));
         rowPHumidity.setText(String.valueOf(recipient.getPlant().getHumidity()));
         rowPTemperature.setText(String.valueOf(recipient.getPlant().getTemperature()));

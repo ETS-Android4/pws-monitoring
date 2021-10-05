@@ -43,6 +43,7 @@ public class AddRecipientModal extends DialogFragment {
     public Dialog dialog;
 
     EditText edtPin;
+    EditText edtPinMoisture;
     EditText edtAddress;
     Button buttonQrScan;
 
@@ -76,6 +77,7 @@ public class AddRecipientModal extends DialogFragment {
     public void bindGUI(View v) {
         edtAddress = (EditText)v.findViewById(R.id.edtAddress);
         edtPin = (EditText) v.findViewById(R.id.editTextPin);
+        edtPinMoisture = (EditText) v.findViewById(R.id.editTextPinMoisture);
         buttonQrScan = (Button)v.findViewById(R.id.buttonQrScan);
         buttonQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +113,7 @@ public class AddRecipientModal extends DialogFragment {
                 recipient.setPlant(plant);
                 recipient.setByteAddress(edtAddress.getText().toString());
                 recipient.setRelayPin(Integer.parseInt(edtPin.getText().toString()));
+                recipient.setMoisturePin(Integer.parseInt(edtPinMoisture.getText().toString()));
 
                 createRecipient(recipient);
             }

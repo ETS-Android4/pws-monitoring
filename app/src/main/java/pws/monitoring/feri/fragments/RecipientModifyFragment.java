@@ -41,6 +41,7 @@ public class RecipientModifyFragment extends Fragment {
     private EditText edtFModifier;
     private EditText edtByteAddress;
     private EditText edtRelayPin;
+    private EditText edtMoisturePin;
     private Button buttonChangePlant;
     private Button buttonUpdateRecipient;
     private Button buttonDeleteRecipient;
@@ -91,6 +92,7 @@ public class RecipientModifyFragment extends Fragment {
         edtFModifier = (EditText) v.findViewById(R.id.edtFModifier);
         edtByteAddress = (EditText) v.findViewById(R.id.edtByteAddress);
         edtRelayPin = (EditText) v.findViewById(R.id.edtRelayPin);
+        edtMoisturePin = (EditText) v.findViewById(R.id.edtMoisturePin);
 
         buttonChangePlant = (Button) v.findViewById(R.id.buttonChangePlant);
         buttonChangePlant.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +111,9 @@ public class RecipientModifyFragment extends Fragment {
 
                 if(!edtRelayPin.getText().toString().equals(""))
                     recipient.setRelayPin(Integer.parseInt(edtRelayPin.getText().toString()));
+
+                if(!edtMoisturePin.getText().toString().equals(""))
+                    recipient.setMoisturePin(Integer.parseInt(edtMoisturePin.getText().toString()));
 
                 if(scannedPlant != null)
                     recipient.setPlant(scannedPlant);
