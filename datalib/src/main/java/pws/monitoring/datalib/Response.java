@@ -1,18 +1,22 @@
 package pws.monitoring.datalib;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Response {
+    @SerializedName(value = "_id", alternate = "id")
     String id;
-    String userId;
-    String recipientId;
+    @SerializedName(value = "request_id", alternate = "requestId")
+    String requestId;
+    String message;
     int light;
     int humidity;
     int temperature;
     int moisture;
 
-    public Response(String id, String userId, String recipientId, int light, int humidity, int temperature, int moisture) {
+    public Response(String id, String requestId, String message, int light, int humidity, int temperature, int moisture) {
         this.id = id;
-        this.userId = userId;
-        this.recipientId = recipientId;
+        this.requestId = requestId;
+        this.message = message;
         this.light = light;
         this.humidity = humidity;
         this.temperature = temperature;
@@ -27,20 +31,20 @@ public class Response {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 
-    public String getRecipientId() {
-        return recipientId;
+    public String getMessage() {
+        return message;
     }
 
-    public void setRecipientId(String recipientId) {
-        this.recipientId = recipientId;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public int getLight() {
@@ -79,8 +83,8 @@ public class Response {
     public String toString() {
         return "Response{" +
                 "id='" + id + '\'' +
-                ", userId='" + userId + '\'' +
-                ", recipientId='" + recipientId + '\'' +
+                ", requestId='" + requestId + '\'' +
+                ", message='" + message + '\'' +
                 ", light=" + light +
                 ", humidity=" + humidity +
                 ", temperature=" + temperature +

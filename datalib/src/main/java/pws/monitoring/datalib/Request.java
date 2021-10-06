@@ -1,24 +1,43 @@
 package pws.monitoring.datalib;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Request {
+    @SerializedName(value = "_id", alternate = "id")
     String id;
+    @SerializedName(value = "user_id", alternate = "userId")
     String userId;
-    String recipientId;
+    @SerializedName(value = "device_ip", alternate = "deviceIp")
     String deviceIp;
+    @SerializedName(value = "byte_address", alternate = "byteAddress")
     String byteAddress;
+    @SerializedName(value = "moisture_pin", alternate = "moisturePin")
     int moisturePin;
+    @SerializedName(value = "relay_pin", alternate = "relayPin")
     int relayPin;
+    @SerializedName(value = "activate_pump", alternate = "activatePump")
     Boolean activatePump;
+    @SerializedName(value = "fetch_data", alternate = "fetchSensoryData")
     Boolean fetchSensoryData;
 
     public Request() {
     }
 
-    public Request(String id, String userId, String recipientId, String deviceIp,
+    public Request(String userId, String deviceIp,
+                   String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+        this.userId = userId;
+        this.deviceIp = deviceIp;
+        this.byteAddress = byteAddress;
+        this.moisturePin = moisturePin;
+        this.relayPin = relayPin;
+        this.activatePump = activatePump;
+        this.fetchSensoryData = fetchSensoryData;
+    }
+
+    public Request(String id, String userId, String deviceIp,
                    String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.id = id;
         this.userId = userId;
-        this.recipientId = recipientId;
         this.deviceIp = deviceIp;
         this.byteAddress = byteAddress;
         this.moisturePin = moisturePin;
@@ -41,14 +60,6 @@ public class Request {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(String recipientId) {
-        this.recipientId = recipientId;
     }
 
     public String getDeviceIp() {
@@ -104,7 +115,6 @@ public class Request {
         return "Request{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
-                ", recipientId='" + recipientId + '\'' +
                 ", deviceIp='" + deviceIp + '\'' +
                 ", byteAddress='" + byteAddress + '\'' +
                 ", moisturePin=" + moisturePin +

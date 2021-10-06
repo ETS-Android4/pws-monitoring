@@ -1,48 +1,62 @@
 package pws.monitoring.feri.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import pws.monitoring.datalib.Recipient;
+import pws.monitoring.datalib.Request;
+import pws.monitoring.datalib.Response;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.network.NetworkUtil;
 import pws.monitoring.feri.util.MonthUtil;
+import retrofit2.adapter.rxjava.HttpException;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class RecipientDetailsFragment extends Fragment {
-    User user;
-    Recipient recipient;
+    private TextView textViewPlantNames;
+    private TextView textViewPlantTechData;
+    private TextView rowPLight;
+    private TextView rowRLight;
+    private TextView rowPHumidity;
+    private TextView rowRHumidity;
+    private TextView rowPTemperature;
+    private TextView rowRTemperature;
+    private TextView rowPMoisture;
+    private TextView rowRMoisture;
+    private TextView rowGrowthMonth;
+    private TextView rowWinterMonth;
+    private TextView rowGrowthMoisture;
+    private TextView rowWinterMoisture;
+    private TextView rowGrowingFrequency;
+    private TextView rowWinterFrequency;
+    private Button buttonRefresh;
+    private Button buttonWater;
 
-    TextView textViewPlantNames;
-    TextView textViewPlantTechData;
-    TextView rowPLight;
-    TextView rowRLight;
-    TextView rowPHumidity;
-    TextView rowRHumidity;
-    TextView rowPTemperature;
-    TextView rowRTemperature;
-    TextView rowPMoisture;
-    TextView rowRMoisture;
-    TextView rowGrowthMonth;
-    TextView rowWinterMonth;
-    TextView rowGrowthMoisture;
-    TextView rowWinterMoisture;
-    TextView rowGrowingFrequency;
-    TextView rowWinterFrequency;
-    Button buttonRefresh;
-    Button buttonWater;
+    private CompositeSubscription subscription;
 
+    private User user;
+    private Recipient recipient;
+    private Response response;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +68,7 @@ public class RecipientDetailsFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_recipient_details, container, false);
 
+        subscription = new CompositeSubscription();
         user = ApplicationState.loadLoggedUser();
         Bundle bundle = getArguments();
         recipient = ApplicationState.getGson().fromJson(bundle.getString("recipient"),
@@ -88,7 +103,10 @@ public class RecipientDetailsFragment extends Fragment {
         else
             rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
 
-        //TODO bind sensor data to rows
+        rowRLight.setText("Not fetched");
+        rowRHumidity.setText("Not fetched");
+        rowRTemperature.setText("Not fetched");
+        rowRMoisture.setText("Not fetched");
     }
 
 
@@ -113,16 +131,45 @@ public class RecipientDetailsFragment extends Fragment {
         buttonRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add command to refresh data from table
+                handleArduinoRequest(false, true);
             }
         });
         buttonWater = (Button) v.findViewById(R.id.buttonWater);
         buttonWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add command to water the plant
+                handleArduinoRequest(true, false);
             }
         });
+    }
+
+    private void handleArduinoRequest(boolean pump, boolean fetch){
+        Request request = new Request(user.getId(), user.getIp(), recipient.getByteAddress(),
+                recipient.getMoisturePin(), recipient.getRelayPin(), pump, fetch);
+        subscription.add(NetworkUtil.getRetrofit().requestArduinoAction(request)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponse, this::handleError));
+    }
+
+    private void handleResponse(Request request){
+        ResponseHandlerThread thread = new ResponseHandlerThread(request.getId());
+        thread.start();
+    }
+
+    private void handleError(Throwable error) {
+
+        if (error instanceof HttpException) {
+            try {
+                String errorBody = ((HttpException) error).response().errorBody().string();
+                Log.i("REGISTER ERROR", errorBody);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(requireContext(), error.getMessage(),  Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -130,4 +177,66 @@ public class RecipientDetailsFragment extends Fragment {
         super.onDestroyView();
     }
 
+    class ResponseHandlerThread extends Thread {
+        String id;
+
+        ResponseHandlerThread(String id) {
+            this.id = id;
+        }
+
+        @Override
+        public void run() {
+            Log.d("Fetch", "startThread");
+            while(response == null){
+                subscription.add(NetworkUtil.getRetrofit().getResponse(id)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(this::handleResponse, this::handleError));
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void handleResponse(Response r){
+            response = r;
+            Handler threadHandler = new Handler(Looper.getMainLooper());
+            threadHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(r.getMessage().equals("")){
+                        rowRLight.setText(String.valueOf(r.getLight()));
+                        rowRHumidity.setText(String.valueOf(r.getHumidity()));
+                        rowRTemperature.setText(String.valueOf(r.getTemperature()));
+                        rowRMoisture.setText(String.valueOf(r.getMoisture()));
+                    } else
+                        Toast.makeText(requireContext(), r.getMessage(), Toast.LENGTH_SHORT);
+                }
+            });
+            subscription.add(NetworkUtil.getRetrofit().removeResponse(r.getId())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::handleDeleteResponse, this::handleError));
+        }
+
+        private void handleDeleteResponse(Void v){
+            Log.i("RESPONSE", "All clear");
+        }
+
+        private void handleError(Throwable error) {
+            if (error instanceof HttpException) {
+                try {
+                    String errorBody = ((HttpException) error).response().errorBody().string();
+                    Log.i("REGISTER ERROR", errorBody);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(requireContext(), error.getMessage(),  Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }

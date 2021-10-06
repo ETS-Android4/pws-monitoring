@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import pws.monitoring.datalib.Notification;
 import pws.monitoring.datalib.Plant;
 import pws.monitoring.datalib.Recipient;
+import pws.monitoring.datalib.Request;
+import pws.monitoring.datalib.Response;
 import pws.monitoring.datalib.User;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -19,6 +21,9 @@ public interface RetrofitInterface {
     @GET("/users/user/{id}")
     Observable<User> getUser(@Path("id") String id);
 
+    @GET("/responses/{id}")
+    Observable<Response> getResponse(@Path("id") String id);
+
     @POST("/users/register")
     Observable<User> register(@Body User user);
 
@@ -31,6 +36,8 @@ public interface RetrofitInterface {
     @POST("/recipients/{id}")
     Observable<User> createRecipient(@Path("id") String id, @Body Recipient recipient);
 
+    @POST("/requests/")
+    Observable<Request> requestArduinoAction(@Body Request request);
 
     @PUT("/users/update_user/{id}")
     Observable<User> updateUser(@Path("id") String id, @Body User user);
@@ -55,5 +62,8 @@ public interface RetrofitInterface {
 
     @DELETE("/users/remove_notification/{id}/{notification_id}")
     Observable<User> removeNotification(@Path("id") String id,@Path("notification_id") String notificationId);
+
+    @DELETE("/responses/{id}")
+    Observable<Void> removeResponse(@Path("id") String id);
 
 }
