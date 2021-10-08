@@ -130,7 +130,7 @@ public class AddRecipientModal extends DialogFragment {
 
     private void handleResponse(User user) {
         ApplicationState.saveLoggedUser(user);
-        EventBus.getDefault().post(new OnUserUpdated());
+        EventBus.getDefault().post(new OnUserUpdated(user));
         dismiss();
     }
 

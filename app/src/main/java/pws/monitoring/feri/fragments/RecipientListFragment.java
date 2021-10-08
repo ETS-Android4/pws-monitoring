@@ -110,7 +110,7 @@ public class RecipientListFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OnUserUpdated event) {
         user = ApplicationState.loadLoggedUser();
-        recipientAdapter = new RecipientAdapter(requireContext(), user.getRecipients());
+        recipientAdapter = new RecipientAdapter(requireContext(),event.getUser().getRecipients());
         recipientsRecyclerView.setAdapter(recipientAdapter);
     }
 

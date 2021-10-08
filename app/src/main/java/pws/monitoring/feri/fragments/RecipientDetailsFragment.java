@@ -187,9 +187,14 @@ public class RecipientDetailsFragment extends Fragment {
         @Override
         public void run() {
             Log.d("Fetch", "startThread");
+            int tries = 0;
             while(response == null){
+                if(tries == 30){
+                    //delete request
+                    break;
+                }
                 subscription.add(NetworkUtil.getRetrofit().getResponse(id)
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .observeOn(Schedulers.newThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(this::handleResponse, this::handleError));
                 try {
@@ -197,6 +202,7 @@ public class RecipientDetailsFragment extends Fragment {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                tries++;
             }
         }
 

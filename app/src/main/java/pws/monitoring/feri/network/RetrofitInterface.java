@@ -8,6 +8,7 @@ import pws.monitoring.datalib.Recipient;
 import pws.monitoring.datalib.Request;
 import pws.monitoring.datalib.Response;
 import pws.monitoring.datalib.User;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;

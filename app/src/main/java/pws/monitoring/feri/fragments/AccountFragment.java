@@ -1,5 +1,6 @@
 package pws.monitoring.feri.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -20,6 +22,7 @@ import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.network.NetworkUtil;
+import pws.monitoring.feri.services.UserUpdateService;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,6 +35,8 @@ public class AccountFragment extends Fragment {
     Button buttonUpdate;
     Button buttonLogout;
     Button buttonDelete;
+    Button buttonStartUpdate;
+    Button buttonStopUpdate;
 
     private CompositeSubscription subscription;
     User user;
@@ -89,12 +94,32 @@ public class AccountFragment extends Fragment {
                 deleteAccount();
             }
         });
+        buttonStartUpdate = (Button) v.findViewById(R.id.buttonStartUpdate);
+        buttonStartUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ApplicationState.runUpdateService = true;
+                startService();
+            }
+        });
+        buttonStopUpdate = (Button) v.findViewById(R.id.buttonStopUpdate);
+        buttonStopUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ApplicationState.runUpdateService = false;
+            }
+        });
     }
 
     private void bindValues(){
         User user = ApplicationState.loadLoggedUser();
         edtEmailUpdate.setHint(user.getEmail());
         edtIpDeviceUpdate.setHint(user.getIp());
+    }
+
+    public void startService() {
+        Intent serviceIntent = new Intent(requireContext(), UserUpdateService.class);
+        ContextCompat.startForegroundService(requireContext(), serviceIntent);
     }
 
     private void updateUser(User user) {

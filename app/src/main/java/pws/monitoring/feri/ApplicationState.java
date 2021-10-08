@@ -1,7 +1,10 @@
 package pws.monitoring.feri;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -11,16 +14,21 @@ import pws.monitoring.datalib.User;
 import pws.monitoring.feri.config.ApplicationConfig;
 
 public class ApplicationState extends Application {
+    public static final String CHANNEL_ID = "userUpdateServiceChannel";
+    public static final String CHANNEL_ID_NOTIFICATIONS = "notificationsChannel";
+
     private static Gson gson;
     private static User loggedUser;
     public static SharedPreferences sharedPreferences;
+
+    public static boolean runUpdateService;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        runUpdateService = true;
     }
 
     public static Gson getGson() {

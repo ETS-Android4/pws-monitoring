@@ -100,7 +100,7 @@ public class NotificationsFragment extends Fragment {
                     }
                     user.setNotifications(matched);
                 }
-                EventBus.getDefault().post(new OnUserUpdated());
+                EventBus.getDefault().post(new OnUserUpdated(user));
             }
         });
         buttonFilter = (Button) v.findViewById(R.id.buttonFilter);
@@ -214,7 +214,7 @@ public class NotificationsFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(OnUserUpdated event) {
-        notificationAdapter = new NotificationAdapter(requireContext(), user.getNotifications());
+        notificationAdapter = new NotificationAdapter(requireContext(), event.getUser().getNotifications());
         notificationRecyclerView.setAdapter(notificationAdapter);
     }
 
@@ -273,7 +273,7 @@ public class NotificationsFragment extends Fragment {
                 user = ApplicationState.loadLoggedUser();
         }
         Log.i("Notifications sorted", user.getNotifications().toString());
-        EventBus.getDefault().post(new OnUserUpdated());
+        EventBus.getDefault().post(new OnUserUpdated(user));
 
     }
 

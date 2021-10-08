@@ -194,7 +194,7 @@ public class RecipientModifyFragment extends Fragment {
 
     private void handleResponse(User user) {
         ApplicationState.saveLoggedUser(user);
-        EventBus.getDefault().post(new OnUserUpdated());
+        EventBus.getDefault().post(new OnUserUpdated(user));
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         RecipientListFragment recipientListFragment = new RecipientListFragment();
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation,
