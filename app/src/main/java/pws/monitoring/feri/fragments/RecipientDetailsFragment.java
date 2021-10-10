@@ -1,5 +1,6 @@
 package pws.monitoring.feri.fragments;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.w3c.dom.Text;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -51,6 +54,7 @@ public class RecipientDetailsFragment extends Fragment {
     private TextView rowWinterFrequency;
     private Button buttonRefresh;
     private Button buttonWater;
+    private ImageView imageView;
 
     private CompositeSubscription subscription;
 
@@ -107,6 +111,11 @@ public class RecipientDetailsFragment extends Fragment {
         rowRHumidity.setText("Not fetched");
         rowRTemperature.setText("Not fetched");
         rowRMoisture.setText("Not fetched");
+
+        if(!recipient.getPath().equals("")){
+            File imageFile = new File(recipient.getPath());
+            Picasso.get().load(imageFile).fit().into(imageView);
+        }
     }
 
 
@@ -127,6 +136,7 @@ public class RecipientDetailsFragment extends Fragment {
         rowWinterMoisture = (TextView) v.findViewById(R.id.rowWinterMoisture) ;
         rowGrowingFrequency = (TextView) v.findViewById(R.id.rowGrowingFrequency) ;
         rowWinterFrequency = (TextView) v.findViewById(R.id.rowWinterFrequency) ;
+        imageView = (ImageView) v.findViewById(R.id.imageViewPlantPhoto);
         buttonRefresh = (Button) v.findViewById(R.id.buttonRefresh);
         buttonRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,10 +188,10 @@ public class RecipientDetailsFragment extends Fragment {
     }
 
     class ResponseHandlerThread extends Thread {
-        String id;
+        String requestId;
 
         ResponseHandlerThread(String id) {
-            this.id = id;
+            this.requestId = id;
         }
 
         @Override
@@ -189,11 +199,11 @@ public class RecipientDetailsFragment extends Fragment {
             Log.d("Fetch", "startThread");
             int tries = 0;
             while(response == null){
-                if(tries == 30){
-                    //delete request
-                    break;
-                }
-                subscription.add(NetworkUtil.getRetrofit().getResponse(id)
+               if(tries == 30){
+                   freeRequest(requestId);
+                   break;
+               }
+                subscription.add(NetworkUtil.getRetrofit().getResponse(requestId)
                         .observeOn(Schedulers.newThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(this::handleResponse, this::handleError));
@@ -208,27 +218,37 @@ public class RecipientDetailsFragment extends Fragment {
 
         private void handleResponse(Response r){
             response = r;
+            Log.i("RESPONSE", r.toString());
             Handler threadHandler = new Handler(Looper.getMainLooper());
             threadHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(r.getMessage().equals("")){
-                        rowRLight.setText(String.valueOf(r.getLight()));
-                        rowRHumidity.setText(String.valueOf(r.getHumidity()));
-                        rowRTemperature.setText(String.valueOf(r.getTemperature()));
-                        rowRMoisture.setText(String.valueOf(r.getMoisture()));
-                    } else
-                        Toast.makeText(requireContext(), r.getMessage(), Toast.LENGTH_SHORT);
+                    rowRLight.setText(String.valueOf(r.getLight()));
+                    rowRHumidity.setText(String.valueOf(r.getHumidity()));
+                    rowRTemperature.setText(String.valueOf(r.getTemperature()));
+                    rowRMoisture.setText(String.valueOf(r.getMoisture()));
+                    Toast.makeText(requireContext(), r.getMessage(), Toast.LENGTH_SHORT);
                 }
             });
-            subscription.add(NetworkUtil.getRetrofit().removeResponse(r.getId())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(this::handleDeleteResponse, this::handleError));
+            freeResponse(r.getId());
         }
 
-        private void handleDeleteResponse(Void v){
-            Log.i("RESPONSE", "All clear");
+        private void freeRequest(String requestId){
+            subscription.add(NetworkUtil.getRetrofit().removeRequest(requestId)
+                    .observeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::handleDeleteRe, this::handleError));
+        }
+
+        private void freeResponse(String responseId) {
+            subscription.add(NetworkUtil.getRetrofit().removeResponse(responseId)
+                    .observeOn(Schedulers.newThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::handleDeleteRe, this::handleError));
+        }
+
+        private void handleDeleteRe(Void v){
+            Log.i("RE", "All clear");
         }
 
         private void handleError(Throwable error) {

@@ -40,6 +40,11 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         subscription = new CompositeSubscription();
+        user = ApplicationState.loadLoggedUser();
+
+        if (user != null){
+            getUser(user.getId());
+        }
 
         bindGUI();
 

@@ -8,6 +8,7 @@ public class Recipient {
     @SerializedName(value = "_id", alternate = "id")
     String id;
     Plant plant;
+    String path;
     @SerializedName(value = "byte_address", alternate = "byteAddress")
     String byteAddress;
     @SerializedName(value = "relay_pin", alternate = "relayPin")
@@ -21,9 +22,10 @@ public class Recipient {
         waterLog = new ArrayList<>();
     }
 
-    public Recipient(String id, Plant plant, String byteAddress, int relayPin, int moisturePin, ArrayList<String> waterLog) {
+    public Recipient(String id, Plant plant, String path, String byteAddress, int relayPin, int moisturePin, ArrayList<String> waterLog) {
         this.id = id;
         this.plant = plant;
+        this.path = path;
         this.byteAddress = byteAddress;
         this.relayPin = relayPin;
         this.moisturePin = moisturePin;
@@ -44,6 +46,14 @@ public class Recipient {
 
     public void setPlant(Plant plant) {
         this.plant = plant;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public ArrayList<String> getWaterLog() {
@@ -83,6 +93,7 @@ public class Recipient {
         return "Recipient{" +
                 "id='" + id + '\'' +
                 ", plant=" + plant +
+                ", path ='" + path + '\'' +
                 ", byteAddress='" + byteAddress + '\'' +
                 ", relayPin=" + relayPin +
                 ", moisturePin=" + moisturePin +
