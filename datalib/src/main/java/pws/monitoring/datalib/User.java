@@ -96,53 +96,6 @@ public class User {
                 '}';
     }
 
-    public void addPlant(Recipient log){
-        for(Recipient a: recipients){
-            if(!a.getPlant().getLatinName().equals(log.getPlant().getLatinName())){
-                recipients.add(log);
-            }
-        }
-    }
-
-    public void removePlant(Recipient log){
-        for(Recipient a: recipients){
-            if(a.getPlant().getLatinName().equals(log.getPlant().getLatinName())){
-                recipients.remove(log);
-            }
-        }
-    }
-
-    public void addLog(Plant p, String dt){
-        for(Recipient a: recipients){
-            if(a.getPlant().getLatinName().equals(p.getLatinName())){
-                a.addDateTime(dt);
-            }
-        }
-    }
-
-    public void removeLog(Plant p, String dt){
-        for(Recipient a: recipients){
-            if(a.getPlant().getLatinName().equals(p.getLatinName())){
-                a.removeDateTime(dt);
-            }
-        }
-    }
-
-    public void addNotification(Notification notification){
-        for(Notification n : notifications){
-            if(!n.getId().equals(notification.getId())){
-                notifications.add(notification);
-            }
-        }
-    }
-
-    public void removeNotification(Notification notification){
-        for(Notification n : notifications){
-            if(n.getId().equals(notification.getId())){
-                notifications.remove(n);
-            }
-        }
-    }
 
     public ArrayList<Calendar> getWateringDates() throws ParseException {
         ArrayList<String> dates = recipients.get(0).getWaterLog();
@@ -175,6 +128,14 @@ public class User {
         System.out.println("Recs");
         System.out.println(r.toString());
         return r;
+    }
+
+    public boolean isUnread(){
+        for (Notification n: notifications){
+            if (!n.isRead())
+                return true;
+        }
+        return false;
     }
 
 }

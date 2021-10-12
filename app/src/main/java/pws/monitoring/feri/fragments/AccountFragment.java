@@ -1,5 +1,6 @@
 package pws.monitoring.feri.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -84,6 +86,8 @@ public class AccountFragment extends Fragment {
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ApplicationState.runUpdateService = false;
+                ApplicationState.removeSavedUser(user);
                 logoutUser();
             }
         });
@@ -91,7 +95,21 @@ public class AccountFragment extends Fragment {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteAccount();
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setMessage("Are you sure you want to delete your account?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ApplicationState.runUpdateService = false;
+                                ApplicationState.removeSavedUser(user);
+                                deleteAccount();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.create().show();
             }
         });
         buttonStartUpdate = (Button) v.findViewById(R.id.buttonStartUpdate);

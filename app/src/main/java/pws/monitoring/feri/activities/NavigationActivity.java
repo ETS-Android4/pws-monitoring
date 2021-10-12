@@ -1,11 +1,8 @@
 package pws.monitoring.feri.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -29,12 +26,16 @@ import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.databinding.ActivityNavigationBinding;
+import pws.monitoring.feri.events.OnNotificationRead;
 import pws.monitoring.feri.events.OnUserUpdated;
 import pws.monitoring.feri.services.UserUpdateService;
 
 
 public class NavigationActivity extends AppCompatActivity {
     private ActivityNavigationBinding binding;
+    private BottomNavigationView navView;
+    private AppBarConfiguration appBarConfiguration;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +44,11 @@ public class NavigationActivity extends AppCompatActivity {
         binding = ActivityNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+        navView = findViewById(R.id.nav_view);
+        appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_account, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_navigation);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_navigation);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         startService();
@@ -111,7 +110,14 @@ public class NavigationActivity extends AppCompatActivity {
                 }
             }
         }
+
         ApplicationState.saveLoggedUser(event.getUser());
+
+       if(ApplicationState.loadLoggedUser() != null && ApplicationState.loadLoggedUser().isUnread())
+           navView.getMenu().getItem(2).setIcon(R.drawable.ic_baseline_notifications_active_24);
+       else
+           navView.getMenu().getItem(2).setIcon(R.drawable.ic_baseline_notifications_white);
+
     }
 
 }

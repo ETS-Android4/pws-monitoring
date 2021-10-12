@@ -112,9 +112,9 @@ public class RecipientDetailsFragment extends Fragment {
         rowRTemperature.setText("Not fetched");
         rowRMoisture.setText("Not fetched");
 
-        if(!recipient.getPath().equals("")){
-            File imageFile = new File(recipient.getPath());
-            Picasso.get().load(imageFile).fit().into(imageView);
+        File imageFile = new File(recipient.getPath());
+        if(recipient.getPath()!= null && imageFile.exists() && imageFile.canRead()){
+            Picasso.get().load(imageFile).resize(200, 200).centerCrop().into(imageView);
         }
     }
 

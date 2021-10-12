@@ -1,6 +1,8 @@
 package pws.monitoring.feri.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,6 +44,8 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
     @Override
     public void onBindViewHolder(@NonNull NotificationItem holder, int position) {
         holder.bindValues(notifications.get(position));
+        if(!notifications.get(position).isRead())
+            holder.itemView.setBackgroundColor(Color.parseColor("#ededed"));
     }
 
     @Override
@@ -85,7 +90,19 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
             buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventBus.getDefault().post(new OnNotificationDelete(n));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setMessage("Are you sure you want to delete this notification?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    EventBus.getDefault().post(new OnNotificationDelete(n));
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    builder.create().show();
                 }
             });
             switch (n.getType()){

@@ -61,4 +61,10 @@ public class ApplicationState extends Application {
         editor.putString(ApplicationConfig.USER_KEY, json);
         editor.apply();
     }
+
+    public static void removeSavedUser(User user){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(ApplicationConfig.USER_KEY);
+        editor.apply();
+    }
 }

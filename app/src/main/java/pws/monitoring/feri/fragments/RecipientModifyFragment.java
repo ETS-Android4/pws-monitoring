@@ -204,9 +204,20 @@ public class RecipientModifyFragment extends Fragment {
         buttonDeleteRecipient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleApiRequest("deleteRecipient");
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setMessage("Are you sure you want to delete this recipient?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                handleApiRequest("deleteRecipient");
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.create().show();
             }
-
         });
     }
 
