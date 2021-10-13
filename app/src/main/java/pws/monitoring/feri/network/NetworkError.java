@@ -50,6 +50,9 @@ public class NetworkError {
         } else {
 
             switch (statusCode){
+                case 400:
+                    title = context.getResources().getString(R.string.text_400);
+                    break;
                 case 401:
                     title = context.getResources().getString(R.string.text_401);
                     break;
