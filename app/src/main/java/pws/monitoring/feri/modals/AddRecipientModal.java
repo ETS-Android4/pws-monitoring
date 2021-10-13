@@ -3,6 +3,7 @@ package pws.monitoring.feri.modals;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,9 @@ import pws.monitoring.datalib.Recipient;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.events.OnUserUpdated;
+import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,14 +45,14 @@ public class AddRecipientModal extends DialogFragment {
     public View view;
     public Dialog dialog;
 
-    EditText edtPin;
-    EditText edtPinMoisture;
-    EditText edtAddress;
-    Button buttonQrScan;
+    private EditText edtPin;
+    private EditText edtPinMoisture;
+    private EditText edtAddress;
+    private Button buttonQrScan;
 
     private CompositeSubscription subscription;
 
-    User user;
+    private User user;
 
     public static AddRecipientModal newInstance() {
         AddRecipientModal modal = new AddRecipientModal();
@@ -82,17 +85,16 @@ public class AddRecipientModal extends DialogFragment {
         buttonQrScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(edtAddress.getText().toString().equals("") &&
-                        edtPin.getText().toString().equals("")){
-                    Toast.makeText(requireContext(), "All fields are required", Toast.LENGTH_SHORT);
+                if(TextUtils.isEmpty(edtAddress.getText().toString()) &&
+                        TextUtils.isEmpty(edtPin.getText().toString())){
+                    Toast.makeText(requireContext(), getResources().getString(R.string.validation_fields_required), Toast.LENGTH_SHORT);
                 } else {
                     IntentIntegrator integrator = IntentIntegrator.forSupportFragment(AddRecipientModal.this);
 
                     integrator.setOrientationLocked(false);
-                    integrator.setPrompt("Scan QR code");
+                    integrator.setPrompt(getResources().getString(R.string.text_scan));
                     integrator.setBeepEnabled(false);
                     integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-
 
                     integrator.initiateScan();
                 }
@@ -105,9 +107,9 @@ public class AddRecipientModal extends DialogFragment {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
-                Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.text_cancelled), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getContext(), "Scanned", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.text_scanned), Toast.LENGTH_LONG).show();
                 Plant plant = ApplicationState.getGson().fromJson(result.getContents(), Plant.class);
                 Recipient recipient = new Recipient();
                 recipient.setPlant(plant);
@@ -121,7 +123,6 @@ public class AddRecipientModal extends DialogFragment {
     }
 
     private void createRecipient(Recipient recipient) {
-
         subscription.add(NetworkUtil.getRetrofit().createRecipient(user.getId(), recipient)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -135,20 +136,10 @@ public class AddRecipientModal extends DialogFragment {
     }
 
     private void handleError(Throwable error) {
-
-        if (error instanceof HttpException) {
-            try {
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Log.i("REGISTER ERROR", errorBody);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.i("REGISTER ERROR", error.getMessage());
-        }
+        Log.e(TAG, error.getMessage());
+        NetworkError networkError = new NetworkError(error, getActivity());
+        networkError.handleError();
         dismiss();
     }
-
 
 }

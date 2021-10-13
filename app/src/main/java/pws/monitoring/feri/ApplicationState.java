@@ -22,6 +22,7 @@ public class ApplicationState extends Application {
     public static SharedPreferences sharedPreferences;
 
     public static boolean runUpdateService;
+    public static boolean showProgressDialog;
 
 
     @Override
@@ -29,6 +30,7 @@ public class ApplicationState extends Application {
         super.onCreate();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         runUpdateService = true;
+        showProgressDialog = false;
     }
 
     public static Gson getGson() {

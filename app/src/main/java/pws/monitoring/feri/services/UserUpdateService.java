@@ -20,7 +20,9 @@ import java.io.IOException;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.activities.NavigationActivity;
+import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnUserUpdated;
 import pws.monitoring.feri.network.NetworkUtil;
 import retrofit2.adapter.rxjava.HttpException;
@@ -29,6 +31,10 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class UserUpdateService extends Service {
+    public static final String TAG =  UserUpdateService.class.getSimpleName();
+    public static final int REQUEST_CODE = 0;
+    public static final int FOREGROUND_CODE = 1;
+
     private CompositeSubscription subscription;
 
     @Override
@@ -40,13 +46,13 @@ public class UserUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Intent notificationIntent = new Intent(this, NavigationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                REQUEST_CODE, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, ApplicationState.CHANNEL_ID)
-                .setContentTitle("Update Service")
+                .setContentTitle(getResources().getString(R.string.title_update))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_white)
                 .setContentIntent(pendingIntent)
                 .build();
-        startForeground(1, notification);
+        startForeground(FOREGROUND_CODE, notification);
 
         new Thread(new Runnable() {
             @Override
@@ -57,7 +63,7 @@ public class UserUpdateService extends Service {
                             .subscribeOn(Schedulers.io())
                             .subscribe(this::handleResponseUser, this::handleError));
                     try {
-                        Thread.sleep(10000);
+                        Thread.sleep(ApplicationConfig.INTERVAL);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -67,22 +73,18 @@ public class UserUpdateService extends Service {
 
             private void handleResponseUser(User user) {
                 EventBus.getDefault().post(new OnUserUpdated(user));
-                Log.i("TESTING", user.toString());
+                Log.d(TAG, user.toString());
             }
 
             private void handleError(Throwable error) {
                 if (error instanceof HttpException) {
-                    Gson gson = ApplicationState.getGson();
                     try {
-
-                        String errorBody = ((HttpException) error).response().errorBody().string();
-                        Log.i("ERROR!", errorBody);
-
+                        Log.e(TAG, ((HttpException) error).response().errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(getBaseContext(), error.getLocalizedMessage(),  Toast.LENGTH_LONG).show();
+                    Log.e(TAG, error.getLocalizedMessage());
                 }
             }
 

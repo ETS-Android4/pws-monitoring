@@ -23,9 +23,11 @@ public class RecipientAdapter extends RecyclerView.Adapter <RecipientAdapter
         .RecipientItem>{
 
     private ArrayList<Recipient> recipients;
+    private Context context;
 
     public RecipientAdapter(Context context, ArrayList<Recipient> recipients) {
         this.recipients = recipients;
+        this.context = context;
     }
 
     @NonNull
@@ -50,7 +52,7 @@ public class RecipientAdapter extends RecyclerView.Adapter <RecipientAdapter
 
     public class RecipientItem extends RecyclerView.ViewHolder{
         private TextView commonName;
-        private TextView macAddress;
+        private TextView byteAddress;
         private Button buttonShowDetails;
         private Button buttonModify;
 
@@ -61,7 +63,7 @@ public class RecipientAdapter extends RecyclerView.Adapter <RecipientAdapter
 
         private void bindGUI(View v) {
             commonName = (TextView) v.findViewById(R.id.textViewCommonName);
-            macAddress = (TextView) v.findViewById(R.id.textViewMacAddress);
+            byteAddress = (TextView) v.findViewById(R.id.textViewMacAddress);
             buttonShowDetails = (Button) v.findViewById(R.id.buttonShowDetails);
             buttonModify = (Button) v.findViewById(R.id.buttonModify);
 
@@ -69,8 +71,11 @@ public class RecipientAdapter extends RecyclerView.Adapter <RecipientAdapter
 
         public void bindValues(Recipient r){
             commonName.setText(r.getPlant().getCommonName());
-            macAddress.setText(r.getByteAddress() + ":" +
-                    String.valueOf(r.getRelayPin()) + ", " + String.valueOf(r.getMoisturePin()));
+
+            String infoRecipientText = String.format(context.getResources().getString(R.string.multipart_text_r_info), r.getByteAddress(),
+                    String.valueOf(r.getRelayPin()), String.valueOf(r.getMoisturePin()));
+            byteAddress.setText(infoRecipientText);
+
             buttonShowDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

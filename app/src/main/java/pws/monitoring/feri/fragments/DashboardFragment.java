@@ -45,7 +45,6 @@ public class DashboardFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_dashboard, container, false);
 
-
         return rootView;
     }
 
@@ -58,9 +57,9 @@ public class DashboardFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabs);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if(position == 0) {
-                tab.setText("Recipients");
+                tab.setText(requireActivity().getResources().getString(R.string.title_recipients));
             } else {
-                tab.setText("History");
+                tab.setText(requireActivity().getResources().getString(R.string.title_history));
             }
         }).attach();
     }

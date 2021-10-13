@@ -14,24 +14,21 @@ public class User {
     String id;
     String email;
     String password;
-    String ip;
     ArrayList<Recipient> recipients;
     ArrayList<Notification> notifications;
 
     public User() {
     }
 
-    public User(String email, String password, String ip) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.ip = ip;
     }
 
-    public User(String id, String email, String password, String ip, ArrayList<Recipient> recipients, ArrayList<Notification> notifications) {
+    public User(String id, String email, String password, ArrayList<Recipient> recipients, ArrayList<Notification> notifications) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.ip = ip;
         this.recipients = recipients;
         this.notifications = notifications;
     }
@@ -60,14 +57,6 @@ public class User {
         this.password = password;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public ArrayList<Recipient> getRecipients() {
         return recipients;
     }
@@ -90,7 +79,6 @@ public class User {
                 "id='" + id + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", ip='" + ip + '\'' +
                 ", recipients=" + recipients +
                 ", notifications=" + notifications +
                 '}';

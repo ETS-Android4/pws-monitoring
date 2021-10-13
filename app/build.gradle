@@ -54,4 +54,5 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'org.jsoup:jsoup:1.10.2'
 }

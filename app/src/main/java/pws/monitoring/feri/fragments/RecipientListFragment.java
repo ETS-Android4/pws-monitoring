@@ -25,6 +25,7 @@ import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.adapters.RecipientAdapter;
+import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnRecipientModify;
 import pws.monitoring.feri.events.OnRecipientShow;
 import pws.monitoring.feri.events.OnUserUpdated;
@@ -35,8 +36,9 @@ public class RecipientListFragment extends Fragment {
     private RecyclerView recipientsRecyclerView;
     private RecipientAdapter recipientAdapter;
 
-    FloatingActionButton buttonAdd;
-    User user;
+    private FloatingActionButton buttonAdd;
+
+    private User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +94,7 @@ public class RecipientListFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         RecipientDetailsFragment recipientFragment = new RecipientDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("recipient", ApplicationState.getGson().toJson(event.getRecipient()));
+        bundle.putString(ApplicationConfig.RECIPIENT_KEY, ApplicationState.getGson().toJson(event.getRecipient()));
         recipientFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation, recipientFragment).commit();
     }
@@ -102,7 +104,7 @@ public class RecipientListFragment extends Fragment {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         RecipientModifyFragment recipientFragment = new RecipientModifyFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("recipient", ApplicationState.getGson().toJson(event.getRecipient()));
+        bundle.putString(ApplicationConfig.RECIPIENT_KEY, ApplicationState.getGson().toJson(event.getRecipient()));
         recipientFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation, recipientFragment).commit();
     }

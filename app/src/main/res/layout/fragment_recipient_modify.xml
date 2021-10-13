@@ -21,7 +21,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Moisture: "
+            android:text= "@string/text_moisture"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtMMoisture"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Modifier:"
+            android:text="@string/text_modifier"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtMModifier"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Frequency: "
+            android:text="@string/text_frequency"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtFrequency"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Modifier: "
+            android:text="@string/text_modifier"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtFModifier"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Plant:"
+            android:text="@string/text_plant"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/buttonChangePlant"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Byte Address:"
+            android:text="@string/text_byte_address"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtByteAddress"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Relay pin:"
+            android:text="@string/text_relay_pin"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtRelayPin"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,22 +98,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Moisture pin:"
+            android:text="@string/text_moisture_pin"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/edtMoisturePin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <Button
-            android:id="@+id/buttonUpdateRecipient"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Update R"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtMoisturePin" />
+
 
         <EditText
             android:id="@+id/edtMMoisture"
@@ -184,6 +175,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline22"
             app:layout_constraintTop_toBottomOf="@+id/edtRelayPin" />
 
+
         <Button
             android:id="@+id/buttonChangePlant"
             android:layout_width="50dp"
@@ -194,16 +186,25 @@
             app:layout_constraintTop_toBottomOf="@+id/edtFModifier" />
 
         <Button
-            android:id="@+id/buttonDeleteRecipient"
+            android:id="@+id/buttonUpdatePicture"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="P"
+            app:layout_constraintStart_toEndOf="@+id/buttonChangePlant"
+            app:layout_constraintTop_toTopOf="@+id/buttonChangePlant" />
+
+        <Button
+            android:id="@+id/buttonUpdateRecipient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="50dp"
-            android:text="Delete"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="50dp"
+            android:text="Update R"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonUpdatePlant" />
+            app:layout_constraintTop_toBottomOf="@+id/edtMoisturePin" />
+
 
         <Button
             android:id="@+id/buttonUpdatePlant"
@@ -217,13 +218,18 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonUpdateRecipient" />
 
         <Button
-            android:id="@+id/buttonUpdatePicture"
-            android:layout_width="50dp"
+            android:id="@+id/buttonDeleteRecipient"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="P"
-            app:layout_constraintStart_toEndOf="@+id/buttonChangePlant"
-            app:layout_constraintTop_toTopOf="@+id/buttonChangePlant" />
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/text_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonUpdatePlant" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package pws.monitoring.feri.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -37,14 +38,17 @@ import pws.monitoring.datalib.Notification;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.activities.NavigationActivity;
 import pws.monitoring.feri.adapters.NotificationAdapter;
 import pws.monitoring.feri.adapters.RecipientAdapter;
+import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnFilterSelected;
 import pws.monitoring.feri.events.OnNotificationDelete;
 import pws.monitoring.feri.events.OnNotificationRead;
 import pws.monitoring.feri.events.OnRecipientShow;
 import pws.monitoring.feri.events.OnUserUpdated;
+import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
@@ -53,16 +57,17 @@ import rx.subscriptions.CompositeSubscription;
 
 
 public class NotificationsFragment extends Fragment {
+    public static final String TAG =  NotificationsFragment.class.getSimpleName();
+
     private RecyclerView notificationRecyclerView;
     private NotificationAdapter notificationAdapter;
-
-    EditText edtSearch;
-    Button buttonSearch;
-    Button buttonFilter;
+    private EditText edtSearch;
+    private Button buttonSearch;
+    private Button buttonFilter;
 
     private CompositeSubscription subscription;
 
-    User user;
+    private User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -91,7 +96,7 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 user = ApplicationState.loadLoggedUser();
-                if(!edtSearch.getText().toString().equals("")){
+                if(!TextUtils.isEmpty(edtSearch.getText().toString())){
                     ArrayList<Notification> matched = new ArrayList<>();
                     for(Notification n: user.getNotifications()){
                         if(n.getTitle().contains(edtSearch.getText().toString()) ||
@@ -176,18 +181,9 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void handleError(Throwable error) {
-
-        if (error instanceof HttpException) {
-            try {
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Log.i("REGISTER ERROR", errorBody);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(requireContext(), error.getMessage(),  Toast.LENGTH_LONG).show();
-        }
+        Log.e(TAG, error.getMessage());
+        NetworkError networkError = new NetworkError(error, getActivity());
+        networkError.handleError();
     }
 
     @Override
@@ -225,9 +221,9 @@ public class NotificationsFragment extends Fragment {
                 Collections.sort(user.getNotifications(), new Comparator<Notification>(){
                     public int compare(Notification n1, Notification n2){
                         try {
-                            Date d1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(n1.getDateTime());
-                            Date d2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(n2.getDateTime());
-                            Log.i("Sorting", String.valueOf(d1.compareTo(d2)));
+                            Date d1 = new SimpleDateFormat(ApplicationConfig.DATE_TIME_FORMAT).parse(n1.getDateTime());
+                            Date d2 = new SimpleDateFormat(ApplicationConfig.DATE_TIME_FORMAT).parse(n2.getDateTime());
+                            Log.d(TAG, String.valueOf(d1.compareTo(d2)));
                             return d1.compareTo(d2);
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -240,9 +236,9 @@ public class NotificationsFragment extends Fragment {
                 Collections.sort(user.getNotifications(), new Comparator<Notification>(){
                     public int compare(Notification n1, Notification n2){
                         try {
-                            Date d1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(n1.getDateTime());
-                            Date d2 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(n2.getDateTime());
-                            Log.i("Sorting", String.valueOf(d1.compareTo(d2)));
+                            Date d1 = new SimpleDateFormat(ApplicationConfig.DATE_TIME_FORMAT).parse(n1.getDateTime());
+                            Date d2 = new SimpleDateFormat(ApplicationConfig.DATE_TIME_FORMAT).parse(n2.getDateTime());
+                            Log.d(TAG, String.valueOf(d1.compareTo(d2)));
                             return d2.compareTo(d1);
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -272,7 +268,7 @@ public class NotificationsFragment extends Fragment {
             case 4:
                 user = ApplicationState.loadLoggedUser();
         }
-        Log.i("Notifications sorted", user.getNotifications().toString());
+        Log.d(TAG, user.getNotifications().toString());
         EventBus.getDefault().post(new OnUserUpdated(user));
 
     }

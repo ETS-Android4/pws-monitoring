@@ -1,7 +1,94 @@
 <resources>
     <string name="app_name">PWS Monitoring</string>
+    <!-- TITLES -->
     <string name="title_activity_navigation">NavigationActivity</string>
     <string name="title_account">Account</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_recipients">Recipients</string>
+    <string name="title_history">History</string>
+    <string name="title_option">Pick an option</string>
+    <string name="title_update">Update Service</string>
+
+    <!-- TEXTS -->
+    <string name="text_password">Password</string>
+    <string name="text_log_in">Log in</string>
+    <string name="text_email">E-mail</string>
+    <string name="text_register">Register</string>
+    <string name="text_retype_password">Retype password</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+    <string name="text_ok">OK</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_cancelled">Cancelled</string>
+    <string name="text_scan">Scan QR code</string>
+    <string name="text_scanned">Scanned</string>
+    <string name="text_not_fetched">Not fetched</string>
+    <string name="text_camera">Camera</string>
+    <string name="text_gallery">Gallery</string>
+    <string name="text_401">Unauthorized</string>
+    <string name="text_403">Forbidden</string>
+    <string name="text_404">Not found</string>
+    <string name="text_500">Server error</string>
+    <string name="text_error">Error has occurred</string>
+    <string name="text_new_password">New password</string>
+    <string name="text_update">Update</string>
+    <string name="text_log_out">Log Out</string>
+    <string name="text_delete">Delete</string>
+    <string name="text_stop">Stop</string>
+    <string name="text_start">Start</string>
+    <string name="text_search">Search</string>
+    <string name="text_requirements">Requirements</string>
+    <string name="text_current_state">Current state</string>
+    <string name="text_light">Light</string>
+    <string name="text_humidity">Humidity</string>
+    <string name="text_temperature">Temperature</string>
+    <string name="text_moisture">Moisture</string>
+    <string name="text_growing_season">Growing season</string>
+    <string name="text_winter_season">Winter season</string>
+    <string name="text_month">Month</string>
+    <string name="text_frequency">Frequency</string>
+    <string name="text_modifier">Modifier</string>
+    <string name="text_plant">Plant</string>
+    <string name="text_byte_address">Byte Address</string>
+    <string name="text_relay_pin">Relay pin</string>
+    <string name="text_moisture_pin">Moisture pin</string>
+    <string name="text_address">Address</string>
+    <string name="text_qr_scan">QR Scan</string>
+    <string name="text_waiting_for_response">Waiting for response...</string>
+
+
+    <!-- MULTIPART TEXTS -->
+    <string name="multipart_text_plant">%1$s (%2$s)</string>
+    <string name="multipart_text_recipient">Byte address %1$s and relay/moisture pins %2$s/%3$s</string>
+    <string name="multipart_text_r_info">%1$s: %2$s/%3$s</string>
+    <string name="multipart_text_wplant">%1$s on %2$s, %3$s</string>
+
+
+    <!-- REDIRECTIONS -->
+    <string name="redirection_registration_complete">Registration complete</string>
+    <string name="redirection_registration_cancelled">Registration cancelled</string>
+    <string name="redirection_account_deleted">Account deleted</string>
+
+    <!-- VALIDATIONS -->
+    <string name="validation_email_format">Not correct email format</string>
+    <string name="validation_ip_format">Not correct IP format</string>
+    <string name="validation_fields_required">All fields are mandatory</string>
+    <string name="validation_password_length">Password is too short</string>
+    <string name="validation_passwords_match">Passwords don\'t match</string>
+
+    <!-- DIALOGS -->
+    <string name="dialog_delete_account">Are you sure you want to delete your account?</string>
+    <string name="dialog_delete_recipient">Are you sure you want to delete this recipient?</string>
+    <string name="dialog_delete_notification">Are you sure you want to delete this notification?</string>
+
+    <!-- ERRORS -->
+    <string name="error_socket_timeout">
+        Looks like there was a timeout waiting for response from server.
+        Please check your network connection and try again
+    </string>
+    <string name="error_general">
+        Looks like there was an error. Please reopen the application and try again
+    </string>
+
 </resources>

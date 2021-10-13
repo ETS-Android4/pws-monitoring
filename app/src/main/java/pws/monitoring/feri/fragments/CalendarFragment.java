@@ -29,18 +29,22 @@ import java.util.Date;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.adapters.RecipientAdapter;
 import pws.monitoring.feri.adapters.WPlantsAdapter;
+import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnUserUpdated;
 
 public class CalendarFragment extends Fragment {
+    public static final String TAG =  CalendarFragment.class.getSimpleName();
+
     private RecyclerView recipientsRecyclerView;
     private WPlantsAdapter wPlantsAdapter;
     private CalendarView calendarView;
 
-    User user;
-    String strDate;
-    DateFormat dateFormat;
+    private User user;
+    private String strDate;
+    private DateFormat dateFormat;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class CalendarFragment extends Fragment {
                 R.layout.fragment_calendar, container, false);
 
         user = ApplicationState.loadLoggedUser();
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat = new SimpleDateFormat(ApplicationConfig.DATE_FORMAT);
 
         bindGUI(rootView);
         bindValues();
@@ -68,8 +72,7 @@ public class CalendarFragment extends Fragment {
             public void onDayClick(EventDay eventDay) {
                 Date date = eventDay.getCalendar().getTime();
                 strDate = dateFormat.format(date);
-                Log.i("date", strDate);
-
+                Log.v(TAG, strDate);
 
                 user = ApplicationState.loadLoggedUser();
                 wPlantsAdapter = new WPlantsAdapter(requireContext(), user.getLogDateRecipients(strDate),

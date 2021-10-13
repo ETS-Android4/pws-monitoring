@@ -1,6 +1,5 @@
 package pws.monitoring.feri.fragments;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,6 +27,9 @@ import pws.monitoring.datalib.Response;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
+import pws.monitoring.feri.config.ApplicationConfig;
+import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
 import pws.monitoring.feri.util.MonthUtil;
 import retrofit2.adapter.rxjava.HttpException;
@@ -36,6 +38,8 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class RecipientDetailsFragment extends Fragment {
+    public static final String TAG =  RecipientDetailsFragment.class.getSimpleName();
+
     private TextView textViewPlantNames;
     private TextView textViewPlantTechData;
     private TextView rowPLight;
@@ -75,7 +79,7 @@ public class RecipientDetailsFragment extends Fragment {
         subscription = new CompositeSubscription();
         user = ApplicationState.loadLoggedUser();
         Bundle bundle = getArguments();
-        recipient = ApplicationState.getGson().fromJson(bundle.getString("recipient"),
+        recipient = ApplicationState.getGson().fromJson(bundle.getString(ApplicationConfig.RECIPIENT_KEY),
                 Recipient.class);
 
         bindGUI(rootView);
@@ -85,10 +89,13 @@ public class RecipientDetailsFragment extends Fragment {
     }
 
     private void bindValues() {
-        textViewPlantNames.setText(recipient.getPlant().getCommonName() + " (" + recipient.getPlant().getLatinName() + ")");
-        textViewPlantTechData.setText("Device IP: " + user.getIp() + " on byte address " + recipient.getByteAddress() +
-                " and relay/moisture pins " + String.valueOf(recipient.getRelayPin()) + " " +
-                String.valueOf(recipient.getMoisturePin()));
+        String plantText = String.format(getResources().getString(R.string.multipart_text_plant), recipient.getPlant().getCommonName(),
+                recipient.getPlant().getLatinName());
+        String recipientText = String.format(getResources().getString(R.string.multipart_text_recipient), recipient.getByteAddress(),
+                String.valueOf(recipient.getRelayPin()),  String.valueOf(recipient.getMoisturePin()));
+
+        textViewPlantNames.setText(plantText);
+        textViewPlantTechData.setText(recipientText);
         rowPLight.setText(String.valueOf(recipient.getPlant().getLight()));
         rowPHumidity.setText(String.valueOf(recipient.getPlant().getHumidity()));
         rowPTemperature.setText(String.valueOf(recipient.getPlant().getTemperature()));
@@ -107,10 +114,10 @@ public class RecipientDetailsFragment extends Fragment {
         else
             rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
 
-        rowRLight.setText("Not fetched");
-        rowRHumidity.setText("Not fetched");
-        rowRTemperature.setText("Not fetched");
-        rowRMoisture.setText("Not fetched");
+        rowRLight.setText(getActivity().getResources().getString(R.string.text_not_fetched));
+        rowRHumidity.setText(getActivity().getResources().getString(R.string.text_not_fetched));
+        rowRTemperature.setText(getActivity().getResources().getString(R.string.text_not_fetched));
+        rowRMoisture.setText(getActivity().getResources().getString(R.string.text_not_fetched));
 
         File imageFile = new File(recipient.getPath());
         if(recipient.getPath()!= null && imageFile.exists() && imageFile.canRead()){
@@ -154,7 +161,7 @@ public class RecipientDetailsFragment extends Fragment {
     }
 
     private void handleArduinoRequest(boolean pump, boolean fetch){
-        Request request = new Request(user.getId(), user.getIp(), recipient.getByteAddress(),
+        Request request = new Request(user.getId(), recipient.getByteAddress(),
                 recipient.getMoisturePin(), recipient.getRelayPin(), pump, fetch);
         subscription.add(NetworkUtil.getRetrofit().requestArduinoAction(request)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -168,18 +175,9 @@ public class RecipientDetailsFragment extends Fragment {
     }
 
     private void handleError(Throwable error) {
-
-        if (error instanceof HttpException) {
-            try {
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Log.i("REGISTER ERROR", errorBody);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(requireContext(), error.getMessage(),  Toast.LENGTH_LONG).show();
-        }
+        Log.e(TAG, error.getMessage());
+        NetworkError networkError = new NetworkError(error, getActivity());
+        networkError.handleError();
     }
 
     @Override
@@ -196,10 +194,10 @@ public class RecipientDetailsFragment extends Fragment {
 
         @Override
         public void run() {
-            Log.d("Fetch", "startThread");
+            Log.d(TAG, "startThread");
             int tries = 0;
             while(response == null){
-               if(tries == 30){
+               if(tries == ApplicationConfig.TRIES_LIMIT){
                    freeRequest(requestId);
                    break;
                }
@@ -208,7 +206,7 @@ public class RecipientDetailsFragment extends Fragment {
                         .subscribeOn(Schedulers.io())
                         .subscribe(this::handleResponse, this::handleError));
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(ApplicationConfig.INTERVAL);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -218,7 +216,7 @@ public class RecipientDetailsFragment extends Fragment {
 
         private void handleResponse(Response r){
             response = r;
-            Log.i("RESPONSE", r.toString());
+            Log.i(TAG, r.toString());
             Handler threadHandler = new Handler(Looper.getMainLooper());
             threadHandler.post(new Runnable() {
                 @Override
@@ -248,20 +246,19 @@ public class RecipientDetailsFragment extends Fragment {
         }
 
         private void handleDeleteRe(Void v){
-            Log.i("RE", "All clear");
+            Log.i(TAG, "All clear");
         }
 
         private void handleError(Throwable error) {
             if (error instanceof HttpException) {
                 try {
-                    String errorBody = ((HttpException) error).response().errorBody().string();
-                    Log.i("REGISTER ERROR", errorBody);
+                    Log.d(TAG, ((HttpException) error).response().errorBody().string());
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(requireContext(), error.getMessage(),  Toast.LENGTH_LONG).show();
+                Log.d(TAG, error.getMessage());
             }
         }
     }

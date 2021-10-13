@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import pws.monitoring.datalib.Notification;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnNotificationDelete;
 import pws.monitoring.feri.events.OnNotificationRead;
 import pws.monitoring.feri.events.OnRecipientModify;
@@ -28,9 +29,11 @@ import pws.monitoring.feri.events.OnRecipientShow;
 
 public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapter.NotificationItem>{
     public ArrayList<Notification> notifications;
+    private Context context;
 
     public NotificationAdapter(Context context, ArrayList<Notification> notifications) {
         this.notifications = notifications;
+        this.context = context;
     }
 
     @NonNull
@@ -91,13 +94,13 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setMessage("Are you sure you want to delete this notification?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    builder.setMessage(context.getResources().getString(R.string.dialog_delete_notification))
+                            .setPositiveButton(context.getResources().getString(R.string.text_yes), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     EventBus.getDefault().post(new OnNotificationDelete(n));
                                 }
                             })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(context.getResources().getString(R.string.text_no), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
@@ -106,10 +109,10 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
                 }
             });
             switch (n.getType()){
-                case "Warning":
+                case ApplicationConfig.WARNING_KEY:
                     imageView.setImageResource(R.drawable.ic_baseline_warning_24);
                     break;
-                case "Info":
+                case ApplicationConfig.INFO_KEY:
                     imageView.setImageResource(R.drawable.ic_baseline_info_24);
                     break;
             }

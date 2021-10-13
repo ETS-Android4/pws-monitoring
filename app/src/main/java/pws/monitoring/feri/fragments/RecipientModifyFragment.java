@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +47,11 @@ import pws.monitoring.datalib.Recipient;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
+import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnUserUpdated;
+import pws.monitoring.feri.modals.ProgressModal;
+import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
@@ -54,11 +59,13 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class RecipientModifyFragment extends Fragment {
+    public static final String TAG =  RecipientModifyFragment.class.getSimpleName();
+
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_CAMERA_OPEN = 2;
     private static final int REQUEST_GALLERY = 3;
-    private String currentPhotoPath;
 
+    private String currentPhotoPath;
 
     private EditText edtMMoisture;
     private EditText edtMModifier;
@@ -72,6 +79,7 @@ public class RecipientModifyFragment extends Fragment {
     private Button buttonUpdatePlant;
     private Button buttonUpdateRecipient;
     private Button buttonDeleteRecipient;
+    private ProgressModal progressModal;
 
     private User user;
     private Recipient recipient;
@@ -92,8 +100,10 @@ public class RecipientModifyFragment extends Fragment {
         user = ApplicationState.loadLoggedUser();
         subscription = new CompositeSubscription();
 
+        progressModal = ProgressModal.newInstance();
+
         Bundle bundle = getArguments();
-        recipient = ApplicationState.getGson().fromJson(bundle.getString("recipient"),
+        recipient = ApplicationState.getGson().fromJson(bundle.getString(ApplicationConfig.RECIPIENT_KEY),
                 Recipient.class);
 
         bindGUI(rootView);
@@ -120,6 +130,8 @@ public class RecipientModifyFragment extends Fragment {
         edtRelayPin = (EditText) v.findViewById(R.id.edtRelayPin);
         edtMoisturePin = (EditText) v.findViewById(R.id.edtMoisturePin);
 
+        progressModal.setCancelable(false);
+
         buttonChangePlant = (Button) v.findViewById(R.id.buttonChangePlant);
         buttonChangePlant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,10 +144,14 @@ public class RecipientModifyFragment extends Fragment {
         buttonUpdatePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] colors = {"Camera", "Gallery", "Cancel"};
+                String[] colors = {
+                        getActivity().getResources().getString(R.string.text_camera),
+                        getActivity().getResources().getString(R.string.text_gallery),
+                        getActivity().getResources().getString(R.string.text_cancel),
+                };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-                builder.setTitle("Pick an option");
+                builder.setTitle(getActivity().getResources().getString(R.string.title_option));
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -160,19 +176,19 @@ public class RecipientModifyFragment extends Fragment {
         buttonUpdatePlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!edtMMoisture.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtMMoisture.getText().toString()))
                     recipient.getPlant().setMoisture(Integer.parseInt(edtMMoisture.getText().toString()));
 
-                if(!edtMModifier.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtMModifier.getText().toString()))
                     recipient.getPlant().setMoistureModifier(Integer.parseInt(edtMModifier.getText().toString()));
 
-                if(!edtFrequency.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtFrequency.getText().toString()))
                     recipient.getPlant().setFrequency(Integer.parseInt(edtFrequency.getText().toString()));
 
-                if(!edtFModifier.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtFModifier.getText().toString()))
                     recipient.getPlant().setFrequencyModifier(Integer.parseInt(edtFModifier.getText().toString()));
 
-                handleApiRequest("updatePlant");
+                handleApiRequest(ApplicationConfig.API_UPDATE_P_KEY);
             }
 
         });
@@ -181,22 +197,22 @@ public class RecipientModifyFragment extends Fragment {
         buttonUpdateRecipient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!edtByteAddress.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtByteAddress.getText().toString()))
                     recipient.setByteAddress(edtByteAddress.getText().toString());
 
-                if(!edtRelayPin.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtRelayPin.getText().toString()))
                     recipient.setRelayPin(Integer.parseInt(edtRelayPin.getText().toString()));
 
-                if(!edtMoisturePin.getText().toString().equals(""))
+                if(!TextUtils.isEmpty(edtMoisturePin.getText().toString()))
                     recipient.setMoisturePin(Integer.parseInt(edtMoisturePin.getText().toString()));
 
                 if(scannedPlant != null)
                     recipient.setPlant(scannedPlant);
 
-                if(!currentPhotoPath.equals(""))
+                if(!TextUtils.isEmpty(currentPhotoPath))
                     recipient.setPath(currentPhotoPath);
 
-                handleApiRequest("updateRecipient");
+                handleApiRequest(ApplicationConfig.API_UPDATE_R_KEY);
             }
         });
 
@@ -205,13 +221,13 @@ public class RecipientModifyFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setMessage("Are you sure you want to delete this recipient?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setMessage(getResources().getString(R.string.dialog_delete_recipient))
+                        .setPositiveButton(getResources().getString(R.string.text_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                handleApiRequest("deleteRecipient");
+                                handleApiRequest(ApplicationConfig.API_DELETE_KEY);
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getResources().getString(R.string.text_no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
@@ -234,11 +250,10 @@ public class RecipientModifyFragment extends Fragment {
 
         if(result != null) {
             if(result.getContents() == null) {
-                Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.text_cancelled), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getContext(), "Scanned", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.text_scanned), Toast.LENGTH_LONG).show();
                 scannedPlant = ApplicationState.getGson().fromJson(result.getContents(), Plant.class);
-
             }
         }
     }
@@ -268,17 +283,15 @@ public class RecipientModifyFragment extends Fragment {
             if (grantResults.length < 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
             } else {
-                Toast.makeText(requireContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), getResources().getString(R.string.text_cancelled), Toast.LENGTH_LONG).show();
             }
         }
     }
 
     //CREATE PHOTO
     private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat(ApplicationConfig.DATE_TIME_FORMAT_PICTURE).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        //File storageDir = getActivity().getBaseContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -286,7 +299,6 @@ public class RecipientModifyFragment extends Fragment {
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -303,10 +315,10 @@ public class RecipientModifyFragment extends Fragment {
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }
-            // Continue only if the File was successfully created
+
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getActivity().getBaseContext(),
-                        "pws.monitoring.feri.fileprovider",
+                        ApplicationConfig.AUTHORITY_KEY,
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_CAMERA_OPEN);
@@ -328,21 +340,22 @@ public class RecipientModifyFragment extends Fragment {
     }
 
     private void handleApiRequest(String type){
+        progressModal.show(getParentFragmentManager(), ProgressModal.TAG);
         switch (type){
-            case "updatePlant":
+            case ApplicationConfig.API_UPDATE_P_KEY:
                 subscription.add(NetworkUtil.getRetrofit().updatePlant(user.getId(), recipient.getId(),
                         recipient.getPlant().getId(), recipient.getPlant())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(this::handleResponse, this::handleError));
                 break;
-            case "updateRecipient":
+            case ApplicationConfig.API_UPDATE_R_KEY:
                 subscription.add(NetworkUtil.getRetrofit().updateRecipient(user.getId(), recipient.getId(), recipient)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe(this::handleResponse, this::handleError));
                 break;
-            case "deleteRecipient":
+            case ApplicationConfig.API_DELETE_KEY:
                 subscription.add(NetworkUtil.getRetrofit().removeRecipient(user.getId(), recipient.getId())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
@@ -352,6 +365,7 @@ public class RecipientModifyFragment extends Fragment {
     }
 
     private void handleResponse(User user) {
+        progressModal.dismiss();
         ApplicationState.saveLoggedUser(user);
         EventBus.getDefault().post(new OnUserUpdated(user));
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -361,28 +375,19 @@ public class RecipientModifyFragment extends Fragment {
     }
 
     private void handleError(Throwable error) {
-
-        if (error instanceof HttpException) {
-            try {
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Log.i("REGISTER ERROR", errorBody);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Log.i("REGISTER ERROR", error.getMessage());
-        }
+        progressModal.dismiss();
+        Log.e(TAG, error.getMessage());
+        NetworkError networkError = new NetworkError(error, getActivity());
+        networkError.handleError();
     }
 
     private void startQrScan(){
         IntentIntegrator integrator = IntentIntegrator.forSupportFragment(RecipientModifyFragment.this);
 
         integrator.setOrientationLocked(false);
-        integrator.setPrompt("Scan QR code");
+        integrator.setPrompt(getResources().getString(R.string.text_scan));
         integrator.setBeepEnabled(false);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-
 
         integrator.initiateScan();
     }

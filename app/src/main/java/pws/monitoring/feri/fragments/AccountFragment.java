@@ -3,6 +3,7 @@ package pws.monitoring.feri.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,10 @@ import java.io.IOException;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
+import pws.monitoring.feri.activities.LogInActivity;
+import pws.monitoring.feri.activities.NavigationActivity;
+import pws.monitoring.feri.modals.ProgressModal;
+import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
 import pws.monitoring.feri.services.UserUpdateService;
 import retrofit2.adapter.rxjava.HttpException;
@@ -31,17 +36,20 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class AccountFragment extends Fragment {
-    EditText edtEmailUpdate;
-    EditText edtNewPasswordUpdate;
-    EditText edtIpDeviceUpdate;
-    Button buttonUpdate;
-    Button buttonLogout;
-    Button buttonDelete;
-    Button buttonStartUpdate;
-    Button buttonStopUpdate;
+    public static final String TAG =  AccountFragment.class.getSimpleName();
+
+    private EditText edtEmailUpdate;
+    private EditText edtNewPasswordUpdate;
+    private Button buttonUpdate;
+    private Button buttonLogout;
+    private Button buttonDelete;
+    private Button buttonStartUpdate;
+    private Button buttonStopUpdate;
+    private ProgressModal progressModal;
 
     private CompositeSubscription subscription;
-    User user;
+
+    private User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,11 +61,13 @@ public class AccountFragment extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_account, container, false);
 
-        bindGUI(rootView);
-        bindValues();
-
         user = ApplicationState.loadLoggedUser();
         subscription = new CompositeSubscription();
+
+        progressModal = ProgressModal.newInstance();
+
+        bindGUI(rootView);
+        bindValues();
 
         return rootView;
     }
@@ -65,23 +75,29 @@ public class AccountFragment extends Fragment {
     private void bindGUI(View v) {
         edtEmailUpdate = (EditText) v.findViewById(R.id.edtEmailUpdate);
         edtNewPasswordUpdate = (EditText) v.findViewById(R.id.edtNewPasswordUpdate);
-        edtIpDeviceUpdate = (EditText) v.findViewById(R.id.edtIpDeviceUpdate);
+
+        progressModal.setCancelable(false);
+
         buttonUpdate = (Button) v.findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = new User();
-                if (!edtEmailUpdate.getText().toString().equals(""))
+                if (!TextUtils.isEmpty(edtEmailUpdate.getText().toString()) &&
+                        android.util.Patterns.EMAIL_ADDRESS.matcher(edtEmailUpdate.getText().toString()).matches())
                     user.setEmail(edtEmailUpdate.getText().toString());
-                if (!edtNewPasswordUpdate.getText().toString().equals(""))
+
+                if (!TextUtils.isEmpty(edtNewPasswordUpdate.getText().toString()) &&
+                        edtNewPasswordUpdate.getText().toString().length() > 8)
                     user.setPassword(edtNewPasswordUpdate.getText().toString());
-                if (!edtIpDeviceUpdate.getText().toString().equals(""))
-                    user.setIp(edtIpDeviceUpdate.getText().toString());
+
                 user.setId(ApplicationState.loadLoggedUser().getId());
-                Log.i("USER_UPDATE", user.toString());
+
+                Log.i(TAG, user.toString());
                 updateUser(user);
             }
         });
+
         buttonLogout = (Button) v.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,20 +107,21 @@ public class AccountFragment extends Fragment {
                 logoutUser();
             }
         });
+
         buttonDelete = (Button) v.findViewById(R.id.buttonDeleteAccount);
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setMessage("Are you sure you want to delete your account?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setMessage(requireContext().getResources().getString(R.string.dialog_delete_account))
+                        .setPositiveButton(requireContext().getResources().getString(R.string.text_yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 ApplicationState.runUpdateService = false;
                                 ApplicationState.removeSavedUser(user);
                                 deleteAccount();
                             }
                         })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(requireContext().getResources().getString(R.string.text_no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
@@ -112,6 +129,7 @@ public class AccountFragment extends Fragment {
                 builder.create().show();
             }
         });
+
         buttonStartUpdate = (Button) v.findViewById(R.id.buttonStartUpdate);
         buttonStartUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +138,7 @@ public class AccountFragment extends Fragment {
                 startService();
             }
         });
+
         buttonStopUpdate = (Button) v.findViewById(R.id.buttonStopUpdate);
         buttonStopUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +151,6 @@ public class AccountFragment extends Fragment {
     private void bindValues(){
         User user = ApplicationState.loadLoggedUser();
         edtEmailUpdate.setHint(user.getEmail());
-        edtIpDeviceUpdate.setHint(user.getIp());
     }
 
     public void startService() {
@@ -141,61 +159,58 @@ public class AccountFragment extends Fragment {
     }
 
     private void updateUser(User user) {
-        Gson gson = ApplicationState.getGson();
-        Log.i("USER_UPDATE", gson.toJson(user));
+        Log.v(TAG, ApplicationState.getGson().toJson(user));
+        progressModal.show(getParentFragmentManager(), ProgressModal.TAG);
         subscription.add(NetworkUtil.getRetrofit().updateUser(user.getId(), user)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseUpdate, this::handleError));
     }
 
-    private void deleteAccount(){
-        subscription.add(NetworkUtil.getRetrofit().removeUser(user.getId())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponseDelete, this::handleError));
-    }
-
-    private void handleResponseDelete(Void v) {
-        Toast.makeText(requireContext(), "Account deleted",  Toast.LENGTH_LONG).show();
-        getActivity().finish();
-    }
-
-    private void handleResponseUpdate(User user) {
-        Log.i("USER_UPDATED", user.toString());
-        ApplicationState.saveLoggedUser(user);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_navigation, new AccountFragment()).commit();
-
-    }
-
-    private void handleError(Throwable error) {
-        if (error instanceof HttpException) {
-            try {
-
-                String errorBody = ((HttpException) error).response().errorBody().string();
-                Log.i("ERROR!", errorBody);
-                //Response response = gson.fromJson(errorBody,Response.class);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(requireContext(), error.getLocalizedMessage(),  Toast.LENGTH_LONG).show();
-        }
-    }
-
     private void logoutUser(){
+        progressModal.show(getParentFragmentManager(), ProgressModal.TAG);
         subscription.add(NetworkUtil.getRetrofit().logout()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponseLogout, this::handleError));
     }
 
-    private void handleResponseLogout(Void v) {
+    private void deleteAccount(){
+        progressModal.show(getParentFragmentManager(), ProgressModal.TAG);
+        subscription.add(NetworkUtil.getRetrofit().removeUser(user.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleResponseDelete, this::handleError));
+    }
+
+    private void handleResponseUpdate(User user) {
+        Log.v(TAG, user.toString());
+        progressModal.dismiss();
+        ApplicationState.saveLoggedUser(user);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_navigation, new AccountFragment()).commit();
+
+    }
+
+    private void handleResponseDelete(Void v) {
+        progressModal.dismiss();
+        Toast.makeText(requireContext(), requireContext().getResources()
+                        .getString(R.string.redirection_account_deleted), Toast.LENGTH_LONG).show();
         getActivity().finish();
     }
 
+    private void handleResponseLogout(Void v) {
+        progressModal.dismiss();
+        getActivity().finish();
+    }
+
+
+    private void handleError(Throwable error) {
+        Log.e(TAG, error.getMessage());
+        progressModal.dismiss();
+        NetworkError networkError = new NetworkError(error, getActivity());
+        networkError.handleError();
+    }
 
     @Override
     public void onDestroyView() {

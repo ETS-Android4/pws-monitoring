@@ -15,14 +15,15 @@ import java.util.ArrayList;
 import pws.monitoring.datalib.Recipient;
 import pws.monitoring.feri.R;
 
-public class WPlantsAdapter extends RecyclerView.Adapter <WPlantsAdapter.WPlantItem> {
-    ArrayList<Recipient> recipients;
-    String pickedDate;
+public class WPlantsAdapter extends RecyclerView.Adapter<WPlantsAdapter.WPlantItem> {
+    private ArrayList<Recipient> recipients;
+    private String pickedDate;
+    private Context context;
 
     public WPlantsAdapter(Context context, ArrayList<Recipient> recipients, String pickedDate) {
-        Log.i("WADAPTER", recipients.toString());
         this.recipients = recipients;
         this.pickedDate = pickedDate;
+        this.context = context;
     }
 
     @NonNull
@@ -62,8 +63,9 @@ public class WPlantsAdapter extends RecyclerView.Adapter <WPlantsAdapter.WPlantI
 
         public void bindValues(Recipient r, String dateTime) {
             title.setText(dateTime);
-            String sb = r.getPlant().getCommonName() + " on " +
-                    r.getByteAddress() + ", " + r.getRelayPin();
+            String sb = String.format(context.getResources().getString(R.string.multipart_text_wplant),
+                    r.getPlant().getCommonName(),
+                    r.getByteAddress(), String.valueOf(r.getRelayPin()));
             subtitle.setText(sb);
 
         }

@@ -32,6 +32,9 @@ import pws.monitoring.feri.services.UserUpdateService;
 
 
 public class NavigationActivity extends AppCompatActivity {
+    private final int NOTIFICATION_WARNING = 2;
+    private final int NOTIFICATION_INFO = 3;
+
     private ActivityNavigationBinding binding;
     private BottomNavigationView navView;
     private AppBarConfiguration appBarConfiguration;
@@ -94,7 +97,7 @@ public class NavigationActivity extends AppCompatActivity {
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                    notificationManager.notify(2, builder.build());
+                    notificationManager.notify(NOTIFICATION_WARNING, builder.build());
 
                 } else {
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
@@ -106,7 +109,7 @@ public class NavigationActivity extends AppCompatActivity {
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                    notificationManager.notify(3, builder.build());
+                    notificationManager.notify(NOTIFICATION_INFO, builder.build());
                 }
             }
         }

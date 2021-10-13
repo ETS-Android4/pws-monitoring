@@ -63,9 +63,9 @@
 
                 <TextView android:text="" />
 
-                <TextView android:text="Requirements" />
+                <TextView android:text="@string/text_requirements" />
 
-                <TextView android:text="Current state" />
+                <TextView android:text="@string/text_current_state" />
 
             </TableRow>
 
@@ -74,7 +74,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Light" />
+                <TextView android:text="@string/text_light" />
 
                 <TextView
                     android:id="@+id/rowPLight"
@@ -91,7 +91,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Humidity" />
+                <TextView android:text="@string/text_humidity" />
 
                 <TextView
                     android:id="@+id/rowPHumidity"
@@ -108,7 +108,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Temperature" />
+                <TextView android:text="@string/text_temperature" />
 
                 <TextView
                     android:id="@+id/rowPTemperature"
@@ -125,7 +125,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Moisture" />
+                <TextView android:text="@string/text_moisture" />
 
                 <TextView
                     android:id="@+id/rowPMoisture"
@@ -158,9 +158,9 @@
 
                 <TextView android:text="" />
 
-                <TextView android:text="Growing season" />
+                <TextView android:text="@string/text_growing_season" />
 
-                <TextView android:text="Winter season" />
+                <TextView android:text="@string/text_winter_season" />
 
             </TableRow>
 
@@ -169,7 +169,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Month" />
+                <TextView android:text="@string/text_month" />
 
                 <TextView
                     android:id="@+id/rowGrowthMonth"
@@ -186,7 +186,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Moisture" />
+                <TextView android:text="@string/text_moisture" />
 
                 <TextView
                     android:id="@+id/rowGrowthMoisture"
@@ -203,7 +203,7 @@
                 android:layout_height="match_parent"
                 android:padding="5dp">
 
-                <TextView android:text="Frequency" />
+                <TextView android:text="@string/text_frequency" />
 
                 <TextView
                     android:id="@+id/rowGrowingFrequency"

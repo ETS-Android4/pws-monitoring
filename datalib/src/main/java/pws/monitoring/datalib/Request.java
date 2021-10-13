@@ -7,8 +7,6 @@ public class Request {
     String id;
     @SerializedName(value = "user_id", alternate = "userId")
     String userId;
-    @SerializedName(value = "device_ip", alternate = "deviceIp")
-    String deviceIp;
     @SerializedName(value = "byte_address", alternate = "byteAddress")
     String byteAddress;
     @SerializedName(value = "moisture_pin", alternate = "moisturePin")
@@ -23,10 +21,8 @@ public class Request {
     public Request() {
     }
 
-    public Request(String userId, String deviceIp,
-                   String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+    public Request(String userId, String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.userId = userId;
-        this.deviceIp = deviceIp;
         this.byteAddress = byteAddress;
         this.moisturePin = moisturePin;
         this.relayPin = relayPin;
@@ -34,11 +30,9 @@ public class Request {
         this.fetchSensoryData = fetchSensoryData;
     }
 
-    public Request(String id, String userId, String deviceIp,
-                   String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+    public Request(String id, String userId, String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.id = id;
         this.userId = userId;
-        this.deviceIp = deviceIp;
         this.byteAddress = byteAddress;
         this.moisturePin = moisturePin;
         this.relayPin = relayPin;
@@ -60,14 +54,6 @@ public class Request {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getDeviceIp() {
-        return deviceIp;
-    }
-
-    public void setDeviceIp(String deviceIp) {
-        this.deviceIp = deviceIp;
     }
 
     public String getByteAddress() {
@@ -115,7 +101,6 @@ public class Request {
         return "Request{" +
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
-                ", deviceIp='" + deviceIp + '\'' +
                 ", byteAddress='" + byteAddress + '\'' +
                 ", moisturePin=" + moisturePin +
                 ", relayPin=" + relayPin +
