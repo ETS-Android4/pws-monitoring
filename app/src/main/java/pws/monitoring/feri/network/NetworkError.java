@@ -65,6 +65,9 @@ public class NetworkError {
                 case 500:
                     title = context.getResources().getString(R.string.text_500);
                     break;
+                default:
+                    title = context.getResources().getString(R.string.text_error_default);
+                    break;
             }
 
         }

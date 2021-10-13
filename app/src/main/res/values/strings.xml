@@ -26,6 +26,7 @@
     <string name="text_not_fetched">Not fetched</string>
     <string name="text_camera">Camera</string>
     <string name="text_gallery">Gallery</string>
+    <string name="text_error_default">Server app crashed</string>
     <string name="text_400">Bad Request</string>
     <string name="text_401">Unauthorized</string>
     <string name="text_403">Forbidden</string>
