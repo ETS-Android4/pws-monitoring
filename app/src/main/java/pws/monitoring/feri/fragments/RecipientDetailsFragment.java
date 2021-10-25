@@ -92,7 +92,7 @@ public class RecipientDetailsFragment extends Fragment {
         String plantText = String.format(getResources().getString(R.string.multipart_text_plant), recipient.getPlant().getCommonName(),
                 recipient.getPlant().getLatinName());
         String recipientText = String.format(getResources().getString(R.string.multipart_text_recipient), recipient.getByteAddress(),
-                String.valueOf(recipient.getRelayPin()),  String.valueOf(recipient.getMoisturePin()));
+                String.valueOf(recipient.getRelayPin()), recipient.getMoisturePin());
 
         textViewPlantNames.setText(plantText);
         textViewPlantTechData.setText(recipientText);
@@ -114,14 +114,16 @@ public class RecipientDetailsFragment extends Fragment {
         else
             rowPMoisture.setText(String.valueOf(recipient.getPlant().getMoisture()));
 
-        rowRLight.setText(getActivity().getResources().getString(R.string.text_not_fetched));
-        rowRHumidity.setText(getActivity().getResources().getString(R.string.text_not_fetched));
-        rowRTemperature.setText(getActivity().getResources().getString(R.string.text_not_fetched));
-        rowRMoisture.setText(getActivity().getResources().getString(R.string.text_not_fetched));
+        rowRLight.setText(getResources().getString(R.string.text_not_fetched));
+        rowRHumidity.setText(getResources().getString(R.string.text_not_fetched));
+        rowRTemperature.setText(getResources().getString(R.string.text_not_fetched));
+        rowRMoisture.setText(getResources().getString(R.string.text_not_fetched));
 
-        File imageFile = new File(recipient.getPath());
-        if(recipient.getPath()!= null && imageFile.exists() && imageFile.canRead()){
-            Picasso.get().load(imageFile).resize(200, 200).centerCrop().into(imageView);
+
+        if(recipient.getPath()!= null){
+            File imageFile = new File(recipient.getPath());
+            if (imageFile.exists() && imageFile.canRead())
+                Picasso.get().load(imageFile).resize(200, 200).centerCrop().into(imageView);
         }
     }
 
@@ -176,7 +178,7 @@ public class RecipientDetailsFragment extends Fragment {
 
     private void handleError(Throwable error) {
         Log.e(TAG, error.getMessage());
-        NetworkError networkError = new NetworkError(error, getActivity());
+        NetworkError networkError = new NetworkError(error, requireContext());
         networkError.handleError();
     }
 

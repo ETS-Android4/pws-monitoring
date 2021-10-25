@@ -8,6 +8,7 @@ public class ApplicationConfig {
     public static final String API_UPDATE_R_KEY = "updatePlant";
     public static final String API_UPDATE_P_KEY = "updateRecipient";
     public static final String API_DELETE_KEY = "deleteRecipient";
+    public static final String ERROR_KEY = "Other error";
     public static final String WARNING_KEY = "Warning";
     public static final String INFO_KEY = "Info";
     public static final String DATE_FORMAT = "dd/MM/yyyy";

@@ -54,7 +54,7 @@
     <string name="text_plant">Plant</string>
     <string name="text_byte_address">Byte Address</string>
     <string name="text_relay_pin">Relay pin</string>
-    <string name="text_moisture_pin">Moisture pin</string>
+    <string name="text_moisture_pin">Moisture pin A</string>
     <string name="text_address">Address</string>
     <string name="text_qr_scan">QR Scan</string>
     <string name="text_waiting_for_response">Waiting for response...</string>
@@ -78,6 +78,7 @@
     <string name="validation_fields_required">All fields are mandatory</string>
     <string name="validation_password_length">Password is too short</string>
     <string name="validation_passwords_match">Passwords don\'t match</string>
+    <string name="validation_pins">Incorrect pinout</string>
 
     <!-- DIALOGS -->
     <string name="dialog_delete_account">Are you sure you want to delete your account?</string>

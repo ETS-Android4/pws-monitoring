@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import pws.monitoring.datalib.Plant;
 import pws.monitoring.datalib.Recipient;
@@ -197,14 +198,17 @@ public class RecipientModifyFragment extends Fragment {
         buttonUpdateRecipient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!TextUtils.isEmpty(edtByteAddress.getText().toString()))
+                if(!TextUtils.isEmpty(edtByteAddress.getText().toString()) &&
+                        Pattern.matches("[0-1]{4}", edtByteAddress.getText().toString()))
                     recipient.setByteAddress(edtByteAddress.getText().toString());
 
-                if(!TextUtils.isEmpty(edtRelayPin.getText().toString()))
+                if(!TextUtils.isEmpty(edtRelayPin.getText().toString()) &&
+                        (Integer.parseInt(edtRelayPin.getText().toString()) > 20 &&
+                                Integer.parseInt(edtRelayPin.getText().toString()) < 54))
                     recipient.setRelayPin(Integer.parseInt(edtRelayPin.getText().toString()));
 
-                if(!TextUtils.isEmpty(edtMoisturePin.getText().toString()))
-                    recipient.setMoisturePin(Integer.parseInt(edtMoisturePin.getText().toString()));
+                if(!TextUtils.isEmpty(edtMoisturePin.getText().toString()) && Pattern.matches("A[0-9]", "A" + edtMoisturePin.getText().toString()))
+                    recipient.setMoisturePin("A" + edtMoisturePin.getText().toString());
 
                 if(scannedPlant != null)
                     recipient.setPlant(scannedPlant);

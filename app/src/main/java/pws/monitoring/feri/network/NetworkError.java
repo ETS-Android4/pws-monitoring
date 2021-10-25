@@ -2,6 +2,7 @@ package pws.monitoring.feri.network;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -38,8 +39,6 @@ public class NetworkError {
             }
         } else if (error instanceof SocketTimeoutException) {
             displayDialog(ApplicationConfig.ERROR_CODE, context.getResources().getString(R.string.error_socket_timeout));
-        } else {
-            displayDialog(ApplicationConfig.ERROR_CODE, context.getResources().getString(R.string.error_general));
         }
     }
 

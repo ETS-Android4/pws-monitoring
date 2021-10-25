@@ -10,7 +10,7 @@ public class Request {
     @SerializedName(value = "byte_address", alternate = "byteAddress")
     String byteAddress;
     @SerializedName(value = "moisture_pin", alternate = "moisturePin")
-    int moisturePin;
+    String moisturePin;
     @SerializedName(value = "relay_pin", alternate = "relayPin")
     int relayPin;
     @SerializedName(value = "activate_pump", alternate = "activatePump")
@@ -21,7 +21,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(String userId, String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+    public Request(String userId, String byteAddress, String moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.userId = userId;
         this.byteAddress = byteAddress;
         this.moisturePin = moisturePin;
@@ -30,7 +30,7 @@ public class Request {
         this.fetchSensoryData = fetchSensoryData;
     }
 
-    public Request(String id, String userId, String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+    public Request(String id, String userId, String byteAddress, String moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.id = id;
         this.userId = userId;
         this.byteAddress = byteAddress;
@@ -64,11 +64,11 @@ public class Request {
         this.byteAddress = byteAddress;
     }
 
-    public int getMoisturePin() {
+    public String getMoisturePin() {
         return moisturePin;
     }
 
-    public void setMoisturePin(int moisturePin) {
+    public void setMoisturePin(String moisturePin) {
         this.moisturePin = moisturePin;
     }
 

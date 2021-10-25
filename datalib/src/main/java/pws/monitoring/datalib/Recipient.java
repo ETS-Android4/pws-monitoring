@@ -3,6 +3,7 @@ package pws.monitoring.datalib;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Recipient {
     @SerializedName(value = "_id", alternate = "id")
@@ -14,7 +15,7 @@ public class Recipient {
     @SerializedName(value = "relay_pin", alternate = "relayPin")
     int relayPin;
     @SerializedName(value = "moisture_pin", alternate = "moisturePin")
-    int moisturePin;
+    String moisturePin;
     @SerializedName(value = "water_log", alternate = "waterLog")
     ArrayList<String> waterLog;
 
@@ -22,7 +23,7 @@ public class Recipient {
         waterLog = new ArrayList<>();
     }
 
-    public Recipient(String id, Plant plant, String path, String byteAddress, int relayPin, int moisturePin, ArrayList<String> waterLog) {
+    public Recipient(String id, Plant plant, String path, String byteAddress, int relayPin, String moisturePin, ArrayList<String> waterLog) {
         this.id = id;
         this.plant = plant;
         this.path = path;
@@ -80,12 +81,17 @@ public class Recipient {
         this.byteAddress = byteAddress;
     }
 
-    public int getMoisturePin() {
+    public String getMoisturePin() {
         return moisturePin;
     }
 
-    public void setMoisturePin(int moisturePin) {
+    public void setMoisturePin(String moisturePin) {
         this.moisturePin = moisturePin;
+    }
+
+    public static boolean validatePins(String byteAddress, String moisturePin, int relayPin){
+        return Pattern.matches("[0-1]{4}", byteAddress)
+                && Pattern.matches("A[0-9]", moisturePin) && (relayPin > 20 && relayPin < 54);
     }
 
     @Override
