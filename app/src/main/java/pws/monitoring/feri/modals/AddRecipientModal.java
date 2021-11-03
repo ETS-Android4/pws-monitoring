@@ -109,20 +109,16 @@ public class AddRecipientModal extends DialogFragment {
         if(result != null) {
             if(result.getContents() == null) {
                 Toast.makeText(getContext(), getResources().getString(R.string.text_cancelled), Toast.LENGTH_LONG).show();
-            } else if (Recipient.validatePins(edtAddress.getText().toString(),
-                    "A" + edtPinMoisture.getText().toString(),
-                    Integer.parseInt(edtPin.getText().toString()))){
+            } else {
                 Toast.makeText(getContext(), getResources().getString(R.string.text_scanned), Toast.LENGTH_LONG).show();
                 Plant plant = ApplicationState.getGson().fromJson(result.getContents(), Plant.class);
                 Recipient recipient = new Recipient();
                 recipient.setPlant(plant);
                 recipient.setByteAddress(edtAddress.getText().toString());
                 recipient.setRelayPin(Integer.parseInt(edtPin.getText().toString()));
-                recipient.setMoisturePin("A" + edtPinMoisture.getText().toString());
+                recipient.setMoisturePin(Integer.parseInt(edtPinMoisture.getText().toString()));
 
                 createRecipient(recipient);
-            } else {
-                Toast.makeText(requireContext(), R.string.validation_pins, Toast.LENGTH_SHORT).show();
             }
         }
     }

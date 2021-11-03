@@ -207,8 +207,8 @@ public class RecipientModifyFragment extends Fragment {
                                 Integer.parseInt(edtRelayPin.getText().toString()) < 54))
                     recipient.setRelayPin(Integer.parseInt(edtRelayPin.getText().toString()));
 
-                if(!TextUtils.isEmpty(edtMoisturePin.getText().toString()) && Pattern.matches("A[0-9]", "A" + edtMoisturePin.getText().toString()))
-                    recipient.setMoisturePin("A" + edtMoisturePin.getText().toString());
+                if(!TextUtils.isEmpty(edtMoisturePin.getText().toString()))
+                    recipient.setMoisturePin(Integer.parseInt(edtMoisturePin.getText().toString()));
 
                 if(scannedPlant != null)
                     recipient.setPlant(scannedPlant);

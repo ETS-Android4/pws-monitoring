@@ -7,10 +7,12 @@ public class Request {
     String id;
     @SerializedName(value = "user_id", alternate = "userId")
     String userId;
+    @SerializedName(value = "recipient_id", alternate = "recipientId")
+    String recipientId;
     @SerializedName(value = "byte_address", alternate = "byteAddress")
     String byteAddress;
     @SerializedName(value = "moisture_pin", alternate = "moisturePin")
-    String moisturePin;
+    int moisturePin;
     @SerializedName(value = "relay_pin", alternate = "relayPin")
     int relayPin;
     @SerializedName(value = "activate_pump", alternate = "activatePump")
@@ -21,8 +23,9 @@ public class Request {
     public Request() {
     }
 
-    public Request(String userId, String byteAddress, String moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+    public Request(String userId, String recipientId, String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.userId = userId;
+        this.recipientId = recipientId;
         this.byteAddress = byteAddress;
         this.moisturePin = moisturePin;
         this.relayPin = relayPin;
@@ -30,9 +33,10 @@ public class Request {
         this.fetchSensoryData = fetchSensoryData;
     }
 
-    public Request(String id, String userId, String byteAddress, String moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
+    public Request(String id, String userId, String recipientId, String byteAddress, int moisturePin, int relayPin, Boolean activatePump, Boolean fetchSensoryData) {
         this.id = id;
         this.userId = userId;
+        this.recipientId = recipientId;
         this.byteAddress = byteAddress;
         this.moisturePin = moisturePin;
         this.relayPin = relayPin;
@@ -64,11 +68,11 @@ public class Request {
         this.byteAddress = byteAddress;
     }
 
-    public String getMoisturePin() {
+    public int getMoisturePin() {
         return moisturePin;
     }
 
-    public void setMoisturePin(String moisturePin) {
+    public void setMoisturePin(int moisturePin) {
         this.moisturePin = moisturePin;
     }
 

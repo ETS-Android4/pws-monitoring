@@ -73,7 +73,7 @@ public class RecipientAdapter extends RecyclerView.Adapter <RecipientAdapter
             commonName.setText(r.getPlant().getCommonName());
 
             String infoRecipientText = String.format(context.getResources().getString(R.string.multipart_text_r_info), r.getByteAddress(),
-                    String.valueOf(r.getRelayPin()), r.getMoisturePin());
+                    String.valueOf(r.getRelayPin()), String.valueOf(r.getMoisturePin()));
             byteAddress.setText(infoRecipientText);
 
             buttonShowDetails.setOnClickListener(new View.OnClickListener() {

@@ -92,7 +92,7 @@ public class RecipientDetailsFragment extends Fragment {
         String plantText = String.format(getResources().getString(R.string.multipart_text_plant), recipient.getPlant().getCommonName(),
                 recipient.getPlant().getLatinName());
         String recipientText = String.format(getResources().getString(R.string.multipart_text_recipient), recipient.getByteAddress(),
-                String.valueOf(recipient.getRelayPin()), recipient.getMoisturePin());
+                String.valueOf(recipient.getRelayPin()),  String.valueOf(recipient.getMoisturePin()));
 
         textViewPlantNames.setText(plantText);
         textViewPlantTechData.setText(recipientText);
@@ -163,7 +163,7 @@ public class RecipientDetailsFragment extends Fragment {
     }
 
     private void handleArduinoRequest(boolean pump, boolean fetch){
-        Request request = new Request(user.getId(), recipient.getByteAddress(),
+        Request request = new Request(user.getId(), recipient.getId(), recipient.getByteAddress(),
                 recipient.getMoisturePin(), recipient.getRelayPin(), pump, fetch);
         subscription.add(NetworkUtil.getRetrofit().requestArduinoAction(request)
                 .observeOn(AndroidSchedulers.mainThread())

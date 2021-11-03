@@ -124,6 +124,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void getUser(String id){
+        progressModal.show(getSupportFragmentManager(), ProgressModal.TAG);
         subscription.add(NetworkUtil.getRetrofit().getUser(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -131,7 +132,8 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void handleResponseLogIn(User user) {
-       getUser(user.getId());
+        progressModal.dismiss();
+        getUser(user.getId());
     }
 
     private void handleResponseUser(User user) {
