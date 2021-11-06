@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 import pws.monitoring.datalib.User;
@@ -26,6 +30,7 @@ import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.activities.NavigationActivity;
+import pws.monitoring.feri.events.OnFragmentChanged;
 import pws.monitoring.feri.modals.ProgressModal;
 import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
@@ -43,8 +48,7 @@ public class AccountFragment extends Fragment {
     private Button buttonUpdate;
     private Button buttonLogout;
     private Button buttonDelete;
-    private Button buttonStartUpdate;
-    private Button buttonStopUpdate;
+    private Switch switchNotifications;
     private ProgressModal progressModal;
 
     private CompositeSubscription subscription;
@@ -53,6 +57,7 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().post(new OnFragmentChanged(true));
 
         if (container != null) {
             container.removeAllViews();
@@ -130,20 +135,16 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        buttonStartUpdate = (Button) v.findViewById(R.id.buttonStartUpdate);
-        buttonStartUpdate.setOnClickListener(new View.OnClickListener() {
+        switchNotifications = (Switch) v.findViewById(R.id.switchNotifications);
+        switchNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                ApplicationState.runUpdateService = true;
-                startService();
-            }
-        });
-
-        buttonStopUpdate = (Button) v.findViewById(R.id.buttonStopUpdate);
-        buttonStopUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ApplicationState.runUpdateService = false;
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    ApplicationState.runUpdateService = true;
+                    startService();
+                } else {
+                    ApplicationState.runUpdateService = false;
+                }
             }
         });
     }

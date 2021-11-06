@@ -4,19 +4,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,32 +21,26 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Objects;
 
 import pws.monitoring.datalib.Notification;
 import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
-import pws.monitoring.feri.activities.LogInActivity;
-import pws.monitoring.feri.activities.NavigationActivity;
 import pws.monitoring.feri.adapters.NotificationAdapter;
-import pws.monitoring.feri.adapters.RecipientAdapter;
 import pws.monitoring.feri.config.ApplicationConfig;
 import pws.monitoring.feri.events.OnFilterSelected;
+import pws.monitoring.feri.events.OnFragmentChanged;
 import pws.monitoring.feri.events.OnNotificationDelete;
 import pws.monitoring.feri.events.OnNotificationRead;
-import pws.monitoring.feri.events.OnRecipientShow;
 import pws.monitoring.feri.events.OnUserUpdated;
 import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
-import retrofit2.adapter.rxjava.HttpException;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -69,8 +59,12 @@ public class NotificationsFragment extends Fragment {
 
     private User user;
 
+    private int currentFilter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        EventBus.getDefault().post(new OnFragmentChanged(false));
 
         if (container != null) {
             container.removeAllViews();
@@ -81,6 +75,7 @@ public class NotificationsFragment extends Fragment {
 
         subscription = new CompositeSubscription();
         user = ApplicationState.loadLoggedUser();
+        currentFilter = 0;
 
         bindGUI(rootView);
         bindValues();
@@ -131,18 +126,23 @@ public class NotificationsFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.ascending:
                         EventBus.getDefault().post(new OnFilterSelected(0));
+                        currentFilter = 0;
                         return true;
                     case R.id.descending:
                         EventBus.getDefault().post(new OnFilterSelected(1));
+                        currentFilter = 1;
                         return true;
                     case R.id.unread:
                         EventBus.getDefault().post(new OnFilterSelected(2));
+                        currentFilter = 2;
                         return true;
                     case R.id.read:
                         EventBus.getDefault().post(new OnFilterSelected(3));
+                        currentFilter = 3;
                         return true;
                     case R.id.all:
                         EventBus.getDefault().post(new OnFilterSelected(4));
+                        currentFilter = 4;
                         return true;
                     default:
                         return false;
@@ -186,37 +186,8 @@ public class NotificationsFragment extends Fragment {
         networkError.handleError();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OnNotificationRead event) {
-        updateNotification(event.getNotification());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OnNotificationDelete event) {
-        deleteNotification(event.getNotification());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OnUserUpdated event) {
-        notificationAdapter = new NotificationAdapter(requireContext(), event.getUser().getNotifications());
-        notificationRecyclerView.setAdapter(notificationAdapter);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OnFilterSelected event) {
-        switch (event.getFilter()){
+    private void sortNotifications(int code){
+        switch (code){
             case 0:
                 Collections.sort(user.getNotifications(), new Comparator<Notification>(){
                     public int compare(Notification n1, Notification n2){
@@ -268,6 +239,41 @@ public class NotificationsFragment extends Fragment {
             case 4:
                 user = ApplicationState.loadLoggedUser();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnNotificationRead event) {
+        updateNotification(event.getNotification());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnNotificationDelete event) {
+        deleteNotification(event.getNotification());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnUserUpdated event) {
+        user = event.getUser();
+        sortNotifications(currentFilter);
+        notificationAdapter = new NotificationAdapter(requireContext(), user.getNotifications());
+        notificationRecyclerView.setAdapter(notificationAdapter);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnFilterSelected event) {
+        sortNotifications(event.getFilter());
         Log.d(TAG, user.getNotifications().toString());
         EventBus.getDefault().post(new OnUserUpdated(user));
 

@@ -54,9 +54,10 @@
     <string name="text_plant">Plant</string>
     <string name="text_byte_address">Byte Address</string>
     <string name="text_relay_pin">Relay pin</string>
-    <string name="text_moisture_pin">Moisture pin A</string>
+    <string name="text_moisture_pin">Moisture pin</string>
     <string name="text_address">Address</string>
     <string name="text_qr_scan">QR Scan</string>
+    <string name="text_fetch">Fetched sensory data</string>
     <string name="text_waiting_for_response">Waiting for response...</string>
 
 
@@ -93,5 +94,10 @@
     <string name="error_general">
         Looks like there was an error. Please reopen the application and try again
     </string>
+    <string name="text_plus">+</string>
+    <string name="text_account_settings">Account Settings</string>
+    <string name="text_notification_service">Notification service</string>
+    <string name="text_availability">Availability</string>
+    <string name="text_delete_account">Delete account</string>
 
 </resources>

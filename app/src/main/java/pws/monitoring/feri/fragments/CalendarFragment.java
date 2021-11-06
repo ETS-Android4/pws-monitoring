@@ -33,6 +33,7 @@ import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.adapters.RecipientAdapter;
 import pws.monitoring.feri.adapters.WPlantsAdapter;
 import pws.monitoring.feri.config.ApplicationConfig;
+import pws.monitoring.feri.events.OnFragmentChanged;
 import pws.monitoring.feri.events.OnUserUpdated;
 
 public class CalendarFragment extends Fragment {

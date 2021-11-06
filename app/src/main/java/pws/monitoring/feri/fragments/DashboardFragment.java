@@ -26,6 +26,7 @@ import pws.monitoring.datalib.User;
 import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.adapters.RecipientAdapter;
+import pws.monitoring.feri.events.OnFragmentChanged;
 import pws.monitoring.feri.events.OnRecipientModify;
 import pws.monitoring.feri.events.OnRecipientShow;
 
@@ -37,6 +38,7 @@ public class DashboardFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().post(new OnFragmentChanged(false));
 
         if (container != null) {
             container.removeAllViews();

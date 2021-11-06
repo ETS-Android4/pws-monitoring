@@ -50,6 +50,7 @@ import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.config.ApplicationConfig;
+import pws.monitoring.feri.events.OnFragmentChanged;
 import pws.monitoring.feri.events.OnUserUpdated;
 import pws.monitoring.feri.modals.ProgressModal;
 import pws.monitoring.feri.network.NetworkError;
@@ -90,6 +91,8 @@ public class RecipientModifyFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        EventBus.getDefault().post(new OnFragmentChanged(true));
 
         if (container != null) {
             container.removeAllViews();

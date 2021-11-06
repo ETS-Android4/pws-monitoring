@@ -15,6 +15,6 @@ public class ApplicationConfig {
     public static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
     public static final String DATE_TIME_FORMAT_PICTURE = "dd/MM/yyyy HH:mm:ss";
     public static final int ERROR_CODE = -1;
-    public static final int TRIES_LIMIT = 30;
-    public static final int INTERVAL = 10000;
+    public static final int TRIES_LIMIT = 20;
+    public static final int INTERVAL = 1000;
 }

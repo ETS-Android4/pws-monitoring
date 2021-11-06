@@ -116,6 +116,10 @@ public class NotificationAdapter extends RecyclerView.Adapter <NotificationAdapt
                     imageView.setImageResource(R.drawable.ic_baseline_info_24);
                     break;
             }
+            if(n.isRead())
+                buttonRead.setBackground(context.getDrawable(R.drawable.ic_baseline_mark_email_read_24));
+            else
+                buttonRead.setBackground(context.getDrawable(R.drawable.ic_baseline_mark_email_unread_24));
         }
     }
 }

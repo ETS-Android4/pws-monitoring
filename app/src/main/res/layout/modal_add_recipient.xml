@@ -44,6 +44,7 @@
         android:ems="10"
         android:hint="0000"
         android:inputType="number"
+        android:textCursorDrawable="@drawable/shape_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewAddress"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +57,7 @@
         android:ems="10"
         android:hint="1"
         android:inputType="number"
+        android:textCursorDrawable="@drawable/shape_cursor"
         app:layout_constraintStart_toStartOf="@+id/edtAddress"
         app:layout_constraintTop_toBottomOf="@+id/edtAddress" />
 
@@ -67,6 +69,7 @@
         android:ems="10"
         android:hint="1"
         android:inputType="number"
+        android:textCursorDrawable="@drawable/shape_cursor"
         app:layout_constraintStart_toStartOf="@+id/edtAddress"
         app:layout_constraintTop_toBottomOf="@+id/editTextPin" />
 
@@ -75,7 +78,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:background="@drawable/shape_transparent_rectangle"
         android:text="@string/text_qr_scan"
+        android:textColor="@color/dark_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

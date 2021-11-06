@@ -35,18 +35,18 @@
     <Button
         android:id="@+id/buttonModify"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginEnd="20dp"
-        android:text="M"
+        android:background="@drawable/ic_baseline_settings_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewCommonName" />
 
     <Button
         android:id="@+id/buttonShowDetails"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginEnd="10dp"
-        android:text="S"
+        android:background="@drawable/ic_baseline_eco_24"
         app:layout_constraintEnd_toStartOf="@+id/buttonModify"
         app:layout_constraintTop_toTopOf="@+id/textViewCommonName" />
 

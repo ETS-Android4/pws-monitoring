@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -29,6 +31,7 @@ import pws.monitoring.feri.ApplicationState;
 import pws.monitoring.feri.R;
 import pws.monitoring.feri.activities.LogInActivity;
 import pws.monitoring.feri.config.ApplicationConfig;
+import pws.monitoring.feri.events.OnFragmentChanged;
 import pws.monitoring.feri.network.NetworkError;
 import pws.monitoring.feri.network.NetworkUtil;
 import pws.monitoring.feri.util.MonthUtil;
@@ -68,6 +71,8 @@ public class RecipientDetailsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        EventBus.getDefault().post(new OnFragmentChanged(true));
 
         if (container != null) {
             container.removeAllViews();
@@ -189,16 +194,18 @@ public class RecipientDetailsFragment extends Fragment {
 
     class ResponseHandlerThread extends Thread {
         String requestId;
+        boolean run;
 
         ResponseHandlerThread(String id) {
             this.requestId = id;
+            run = true;
         }
 
         @Override
         public void run() {
             Log.d(TAG, "startThread");
             int tries = 0;
-            while(response == null){
+            while(true){
                if(tries == ApplicationConfig.TRIES_LIMIT){
                    freeRequest(requestId);
                    break;
@@ -218,6 +225,7 @@ public class RecipientDetailsFragment extends Fragment {
 
         private void handleResponse(Response r){
             response = r;
+            run = false;
             Log.i(TAG, r.toString());
             Handler threadHandler = new Handler(Looper.getMainLooper());
             threadHandler.post(new Runnable() {
@@ -227,7 +235,9 @@ public class RecipientDetailsFragment extends Fragment {
                     rowRHumidity.setText(String.valueOf(r.getHumidity()));
                     rowRTemperature.setText(String.valueOf(r.getTemperature()));
                     rowRMoisture.setText(String.valueOf(r.getMoisture()));
-                    Toast.makeText(requireContext(), r.getMessage(), Toast.LENGTH_SHORT);
+                    if(r.getMessage() != null && r.getMessage()!= "")
+                        Toast.makeText(requireContext(), r.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
             });
             freeResponse(r.getId());
@@ -249,6 +259,7 @@ public class RecipientDetailsFragment extends Fragment {
 
         private void handleDeleteRe(Void v){
             Log.i(TAG, "All clear");
+            Thread.currentThread().interrupt();
         }
 
         private void handleError(Throwable error) {
