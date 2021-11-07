@@ -136,6 +136,7 @@ public class AccountFragment extends Fragment {
         });
 
         switchNotifications = (Switch) v.findViewById(R.id.switchNotifications);
+        switchNotifications.setChecked(ApplicationState.runUpdateService);
         switchNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

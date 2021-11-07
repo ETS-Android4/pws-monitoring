@@ -92,7 +92,7 @@ public class RecipientModifyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        EventBus.getDefault().post(new OnFragmentChanged(true));
+        EventBus.getDefault().post(new OnFragmentChanged(false));
 
         if (container != null) {
             container.removeAllViews();
@@ -123,6 +123,7 @@ public class RecipientModifyFragment extends Fragment {
         edtFModifier.setHint(String.valueOf(recipient.getPlant().getFrequencyModifier()));
         edtByteAddress.setHint(recipient.getByteAddress());
         edtRelayPin.setHint(String.valueOf(recipient.getRelayPin()));
+        edtMoisturePin.setHint(String.valueOf(recipient.getMoisturePin()));
     }
 
     private void bindGUI(ViewGroup v) {

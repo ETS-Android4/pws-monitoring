@@ -9,6 +9,9 @@
     <string name="title_history">History</string>
     <string name="title_option">Pick an option</string>
     <string name="title_update">Update Service</string>
+    <string name="title_modify_plant">Modify plant</string>
+    <string name="title_change_plant">Change recipient plant</string>
+    <string name="title_modify_recipient">Modify recipient</string>
 
     <!-- TEXTS -->
     <string name="text_password">Password</string>
@@ -59,6 +62,13 @@
     <string name="text_qr_scan">QR Scan</string>
     <string name="text_fetch">Fetched sensory data</string>
     <string name="text_waiting_for_response">Waiting for response...</string>
+    <string name="text_plus">+</string>
+    <string name="text_account_settings">Account Settings</string>
+    <string name="text_notification_service">Notification service</string>
+    <string name="text_availability">Availability</string>
+    <string name="text_delete_account">Delete account</string>
+    <string name="text_recipient_data">Recipient data</string>
+    <string name="text_plant_data">Plant data</string>
 
 
     <!-- MULTIPART TEXTS -->
@@ -94,10 +104,7 @@
     <string name="error_general">
         Looks like there was an error. Please reopen the application and try again
     </string>
-    <string name="text_plus">+</string>
-    <string name="text_account_settings">Account Settings</string>
-    <string name="text_notification_service">Notification service</string>
-    <string name="text_availability">Availability</string>
-    <string name="text_delete_account">Delete account</string>
+
+
 
 </resources>

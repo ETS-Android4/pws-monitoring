@@ -3,6 +3,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#E6E6E6</color>
     <color name="dimmed_red">#A02C2C</color>
+    <color name="dimmed_blue">#2C66A0</color>
     <color name="dimmed_red_transparency">#E39999</color>
     <color name="moss_green">#8A9A5B</color>
     <color name="dark_grey">#555555</color>

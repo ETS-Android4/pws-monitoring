@@ -8,7 +8,9 @@
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_cloud_upload_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_eco_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_filter_alt_24.xml" value="0.3828125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_local_florist_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_logout_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_mark_email_read_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_mark_email_unread_24.xml" value="0.3828125" />
@@ -16,9 +18,14 @@
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_notifications_white.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_person.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_person_remove_24.xml" value="0.3828125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_qr_code_scanner_24.xml" value="0.3828125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.3828125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_remove_circle_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_warning_24.xml" value="0.2703125" />
-        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_login.xml" value="0.3828125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_baseline_water_drop_24.xml" value="0.3828125" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_login.xml" value="0.5" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_logo.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/ic_register.xml" value="0.3828125" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/drawable/round_borders.xml" value="0.3828125" />
@@ -33,7 +40,7 @@
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_calendar.xml" value="0.5" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_dashboard.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_notifications.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipient_details.xml" value="0.33" />
+        <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipient_details.xml" value="0.22" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipient_modify.xml" value="0.264" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_recipients_list.xml" value="0.5" />
         <entry key="..\:/Users/korisnik/Desktop/diploma/pws-monitoring/app/src/main/res/layout/fragment_watering_history.xml" value="0.36666666666666664" />

@@ -72,7 +72,7 @@ public class RecipientDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        EventBus.getDefault().post(new OnFragmentChanged(true));
+        EventBus.getDefault().post(new OnFragmentChanged(false));
 
         if (container != null) {
             container.removeAllViews();
@@ -129,6 +129,8 @@ public class RecipientDetailsFragment extends Fragment {
             File imageFile = new File(recipient.getPath());
             if (imageFile.exists() && imageFile.canRead())
                 Picasso.get().load(imageFile).resize(200, 200).centerCrop().into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.ic_baseline_local_florist_24);
         }
     }
 
