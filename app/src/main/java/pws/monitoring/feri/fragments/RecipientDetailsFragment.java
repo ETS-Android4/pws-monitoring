@@ -210,6 +210,14 @@ public class RecipientDetailsFragment extends Fragment {
             while(true){
                if(tries == ApplicationConfig.TRIES_LIMIT){
                    freeRequest(requestId);
+                   Handler threadHandler = new Handler(Looper.getMainLooper());
+                   threadHandler.post(new Runnable() {
+                       @Override
+                       public void run() {
+                           Toast.makeText(requireContext(), getActivity().getResources().getString(R.string.text_timeout_request),
+                                   Toast.LENGTH_SHORT).show();
+                       }
+                   });
                    break;
                }
                 subscription.add(NetworkUtil.getRetrofit().getResponse(requestId)

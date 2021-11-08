@@ -69,6 +69,7 @@
     <string name="text_delete_account">Delete account</string>
     <string name="text_recipient_data">Recipient data</string>
     <string name="text_plant_data">Plant data</string>
+    <string name="text_timeout_request">Request timed out</string>
 
 
     <!-- MULTIPART TEXTS -->

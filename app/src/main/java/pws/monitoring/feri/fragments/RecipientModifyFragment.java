@@ -377,9 +377,9 @@ public class RecipientModifyFragment extends Fragment {
         ApplicationState.saveLoggedUser(user);
         EventBus.getDefault().post(new OnUserUpdated(user));
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        RecipientListFragment recipientListFragment = new RecipientListFragment();
+        DashboardFragment dashboardFragment = new DashboardFragment();
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_navigation,
-                recipientListFragment).commit();
+                dashboardFragment).commit();
     }
 
     private void handleError(Throwable error) {
