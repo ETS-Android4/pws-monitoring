@@ -207,7 +207,7 @@ public class RecipientDetailsFragment extends Fragment {
         public void run() {
             Log.d(TAG, "startThread");
             int tries = 0;
-            while(true){
+            while(run){
                if(tries == ApplicationConfig.TRIES_LIMIT){
                    freeRequest(requestId);
                    Handler threadHandler = new Handler(Looper.getMainLooper());
@@ -269,7 +269,6 @@ public class RecipientDetailsFragment extends Fragment {
 
         private void handleDeleteRe(Void v){
             Log.i(TAG, "All clear");
-            Thread.currentThread().interrupt();
         }
 
         private void handleError(Throwable error) {
