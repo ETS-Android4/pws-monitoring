@@ -11,7 +11,10 @@
 * [Contact](#contact)
 
 ## General info
-Front-end part of multi-layered information system made for practical part of diploma thesis.
+Front-end part of multi-layered information system made for practical part of diploma thesis. Complete functioning product is made out of 3 repositories:
+* PWS Monitoring(This one)
+* [PWS Server](https://github.com/JanaJankovic/pws-server)
+* [PWS ESP-32](https://github.com/JanaJankovic/pws-esp-32)
 
 ## Demo
 ![Example1](./screens/Screenshot_1.jpg)
