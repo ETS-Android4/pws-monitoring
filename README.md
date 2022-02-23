@@ -18,10 +18,10 @@ Front-end part of multi-layered information system made for practical part of di
 
 ## Demo
 ### Walkthrough
-![Walkthrough](1.gif)
+<img src="1.gif" height="70%"/>
 
 ### Managing plants
-![Managing plants](2.gif)
+<img src="2.gif" height="70%"/>
 
 
 ## Technologies
