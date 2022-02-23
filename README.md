@@ -22,7 +22,7 @@ Front-end part of multi-layered information system made for practical part of di
 * Android Studio
 
 ## Setup
-Download the code and install it via Android studio. 
+Download the code and install it via Android studio. <br>
 ! Disclaimer - application won't work without actual physical watering station.
 
 ## Features
