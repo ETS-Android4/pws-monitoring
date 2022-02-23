@@ -17,7 +17,11 @@ Front-end part of multi-layered information system made for practical part of di
 * [PWS ESP-32](https://github.com/JanaJankovic/pws-esp-32)
 
 ## Demo
-![Example1](./screens/Screenshot_1.jpg)
+### Walkthrough
+![Walkthrough](1.gif)
+
+### Managing plants
+![Managing plants](2.gif)
 
 
 ## Technologies
